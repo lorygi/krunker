@@ -46,7 +46,6 @@
             display: none;
         }
 
-        /* Mirino */
         #crosshair {
             position: absolute;
             top: 50%;
@@ -54,7 +53,6 @@
             transform: translate(-50%, -50%);
             width: 24px;
             height: 24px;
-            transition: transform 0.08s ease;
         }
         .ch-line {
             position: absolute;
@@ -67,7 +65,6 @@
         .ch-right { width: 7px; height: 2px; right: 0; top: 11px; }
         .ch-dot { width: 2px; height: 2px; left: 11px; top: 11px; background: #fff; position: absolute; }
 
-        /* Hitmarker */
         #hitmarker {
             position: absolute;
             top: 50%;
@@ -90,7 +87,6 @@
         #hitmarker::before { width: 100%; height: 2px; top: 9px; left: 0; }
         #hitmarker::after { width: 2px; height: 100%; left: 9px; top: 0; }
 
-        /* Sniper Scope Overlay */
         #sniper-scope {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -104,7 +100,6 @@
             content: ''; position: absolute; left: 50%; top: 0; width: 1px; height: 100%; background: rgba(0,0,0,0.85);
         }
 
-        /* Bottom Left: Health */
         #hud-bottom-left {
             position: absolute;
             bottom: 24px;
@@ -112,7 +107,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(15, 15, 20, 0.78);
+            background: rgba(15, 15, 20, 0.82);
             padding: 10px 18px;
             border-radius: 6px;
             border-left: 5px solid #ffaa00;
@@ -136,13 +131,12 @@
             transition: width 0.15s ease;
         }
 
-        /* Bottom Right: Ammo & Weapon */
         #hud-bottom-right {
             position: absolute;
             bottom: 24px;
             right: 24px;
             text-align: right;
-            background: rgba(15, 15, 20, 0.78);
+            background: rgba(15, 15, 20, 0.82);
             padding: 10px 20px;
             border-radius: 6px;
             border-right: 5px solid #00e5ff;
@@ -158,25 +152,25 @@
             letter-spacing: 1px;
         }
 
-        /* Top Left: Leaderboard & Info */
         #hud-top-left {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(15, 15, 20, 0.75);
+            background: rgba(15, 15, 20, 0.82);
             padding: 12px 16px;
             border-radius: 6px;
-            min-width: 220px;
+            min-width: 230px;
         }
         .lb-header {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 13px;
             color: #ffaa00;
             text-transform: uppercase;
             border-bottom: 1px solid rgba(255,255,255,0.15);
             padding-bottom: 4px;
             margin-bottom: 6px;
+            font-weight: 700;
         }
         .lb-row {
             display: flex;
@@ -185,7 +179,6 @@
             padding: 2px 0;
         }
 
-        /* Top Right: Killfeed & Speedometer */
         #killfeed {
             position: absolute;
             top: 20px;
@@ -196,12 +189,11 @@
             align-items: flex-end;
         }
         .kf-item {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.75);
             padding: 5px 12px;
             border-radius: 4px;
             font-size: 14px;
             border-right: 3px solid #ffaa00;
-            animation: fadeIn 0.2s ease;
         }
         #speedometer {
             position: absolute;
@@ -221,9 +213,9 @@
             color: #ffaa00;
             text-shadow: 0 2px 4px #000;
             display: none;
+            font-weight: 700;
         }
 
-        /* Damage Vignette */
         #damage-flash {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -232,7 +224,7 @@
             transition: box-shadow 0.15s ease;
         }
 
-        /* Menu Overlay */
+        /* MENU PRINCIPALE */
         #menu-overlay {
             position: absolute;
             top: 0;
@@ -240,23 +232,21 @@
             width: 100%;
             height: 100%;
             z-index: 10;
-            background: radial-gradient(circle, rgba(15,18,28,0.55) 0%, rgba(8,10,16,0.92) 100%);
+            background: radial-gradient(circle, rgba(15,18,28,0.45) 0%, rgba(8,10,16,0.92) 100%);
             display: flex;
             justify-content: space-between;
-            padding: 36px 48px;
+            padding: 30px 42px;
             align-items: center;
         }
 
         .menu-panel {
-            background: rgba(18, 20, 28, 0.92);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(18, 20, 28, 0.94);
+            border: 1px solid rgba(255,255,255,0.12);
             border-top: 4px solid #ffaa00;
             border-radius: 8px;
-            padding: 22px;
-            width: 340px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.65);
-            max-height: 92vh;
-            overflow-y: auto;
+            padding: 20px;
+            width: 330px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
         }
 
         .center-panel {
@@ -265,6 +255,7 @@
             flex-direction: column;
             align-items: center;
             gap: 16px;
+            max-width: 520px;
         }
 
         .logo-title {
@@ -274,102 +265,58 @@
             letter-spacing: 2px;
             color: #fff;
             text-shadow: 0 5px 0 #ffaa00, 0 10px 25px rgba(0,0,0,0.8);
+            line-height: 1;
         }
         .logo-sub {
-            font-size: 15px;
+            font-size: 14px;
             color: #ffaa00;
             letter-spacing: 3px;
-            margin-top: -14px;
             text-transform: uppercase;
-        }
-
-        .play-btn {
-            background: linear-gradient(135deg, #ffaa00, #ff6600);
-            border: none;
-            color: #fff;
-            font-size: 28px;
             font-weight: 700;
-            padding: 16px 56px;
-            border-radius: 6px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #b34700, 0 12px 25px rgba(255,136,0,0.4);
-            transition: transform 0.1s, filter 0.15s;
+        }
+
+        /* SELETTORE MAPPA IN EVIDENZA AL CENTRO */
+        .map-selector-box {
+            background: rgba(18, 20, 28, 0.95);
+            border: 2px solid #00e5ff;
+            border-radius: 8px;
+            padding: 14px 18px;
+            width: 100%;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.25);
+        }
+        .map-selector-header {
+            font-size: 15px;
+            color: #00e5ff;
             text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        .play-btn:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
-        }
-        .play-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px 0 #b34700;
-        }
-
-        .panel-title {
-            font-size: 18px;
-            color: #ffaa00;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 6px;
-        }
-
-        /* Class & Map Cards */
-        .class-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-        .class-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 9px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.15s;
-        }
-        .class-card:hover {
-            background: rgba(255,255,255,0.1);
-        }
-        .class-card.active {
-            border-color: #ffaa00;
-            background: rgba(255, 170, 0, 0.18);
-        }
-        .class-name { font-weight: 700; font-size: 15px; }
-        .class-weap { font-size: 12px; color: #bbb; }
-        .class-hp { font-size: 12px; color: #00ff88; font-weight: 700; }
-
-        /* Map Selector Grid */
         .map-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
-            margin-top: 8px;
         }
         .map-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 5px;
-            padding: 10px 8px;
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            padding: 10px 6px;
             cursor: pointer;
             text-align: center;
-            transition: 0.15s;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.15s ease;
         }
         .map-card:hover {
-            background: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
         }
         .map-card.active {
-            border-color: #00e5ff;
-            background: rgba(0, 229, 255, 0.18);
-            box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+            border-color: #ffaa00;
+            background: rgba(255, 170, 0, 0.25);
+            box-shadow: 0 0 12px rgba(255, 170, 0, 0.5);
         }
         .map-swatch {
-            height: 6px;
+            height: 8px;
             width: 100%;
             border-radius: 3px;
             margin-bottom: 6px;
@@ -380,12 +327,71 @@
             color: #fff;
         }
         .map-desc {
-            font-size: 11px;
-            color: #aaa;
+            font-size: 10px;
+            color: #ccc;
             margin-top: 2px;
         }
 
-        /* Inputs & Multiplayer */
+        .play-btn {
+            background: linear-gradient(135deg, #ffaa00, #ff5500);
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            padding: 15px 52px;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b33c00, 0 12px 25px rgba(255,136,0,0.45);
+            transition: transform 0.1s, filter 0.15s;
+            text-transform: uppercase;
+            width: 100%;
+        }
+        .play-btn:hover {
+            filter: brightness(1.12);
+            transform: translateY(-2px);
+        }
+        .play-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b33c00;
+        }
+
+        .panel-title {
+            font-size: 17px;
+            color: #ffaa00;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            padding-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .class-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .class-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.15s;
+        }
+        .class-card:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .class-card.active {
+            border-color: #ffaa00;
+            background: rgba(255, 170, 0, 0.2);
+        }
+        .class-name { font-weight: 700; font-size: 15px; }
+        .class-weap { font-size: 12px; color: #bbb; }
+        .class-hp { font-size: 12px; color: #00ff88; font-weight: 700; }
+
         .input-group {
             margin-bottom: 12px;
         }
@@ -398,8 +404,8 @@
         }
         .text-input {
             width: 100%;
-            background: rgba(0,0,0,0.45);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.22);
             color: #fff;
             padding: 9px 11px;
             border-radius: 4px;
@@ -409,7 +415,7 @@
             background: #2b3245;
             border: 1px solid rgba(255,255,255,0.2);
             color: #fff;
-            padding: 9px 14px;
+            padding: 10px 14px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: 700;
@@ -427,9 +433,9 @@
         .btn-host:hover { background: #00aa6b; }
 
         #mp-status {
-            margin-top: 10px;
-            padding: 9px;
-            background: rgba(0,0,0,0.4);
+            margin-top: 12px;
+            padding: 10px;
+            background: rgba(0,0,0,0.45);
             border-radius: 4px;
             font-size: 13px;
             color: #00e5ff;
@@ -437,13 +443,14 @@
         }
 
         .controls-hint {
-            background: rgba(0,0,0,0.55);
-            padding: 12px 20px;
+            background: rgba(0,0,0,0.65);
+            padding: 10px 16px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 12px;
             color: #ccc;
             line-height: 1.6;
             border: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
         }
         .key-badge {
             background: #333;
@@ -451,12 +458,7 @@
             border-radius: 3px;
             color: #ffaa00;
             font-weight: 700;
-            font-size: 12px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(15px); }
-            to { opacity: 1; transform: translateX(0); }
+            font-size: 11px;
         }
     </style>
 </head>
@@ -489,7 +491,6 @@
         </div>
 
         <div id="killfeed"></div>
-
         <div id="speedometer">VELOCITÀ: 0 u/s</div>
 
         <div id="hud-bottom-left">
@@ -505,46 +506,47 @@
         </div>
     </div>
 
-    <!-- MAIN MENU OVERLAY -->
+    <!-- MENU PRINCIPALE -->
     <div id="menu-overlay">
-        <!-- Pannello Sinistro: Classi e Mappe -->
+        <!-- Pannello Sinistro: Classi -->
         <div class="menu-panel">
-            <div class="panel-title">Seleziona Classe</div>
+            <div class="panel-title">1. Scegli Classe</div>
             <div class="class-grid" id="class-list"></div>
 
-            <div class="panel-title" style="margin-top: 18px;">Seleziona Mappa</div>
-            <div class="map-grid" id="map-list"></div>
-
-            <div style="margin-top: 14px;">
-                <div class="input-group">
+            <div style="margin-top: 16px;">
+                <div class="input-group" style="margin-bottom:0;">
                     <label>Sensibilità Mouse (<span id="sens-val">2.2</span>)</label>
                     <input type="range" id="sens-slider" min="0.5" max="6.0" step="0.1" value="2.2" style="width:100%;">
                 </div>
             </div>
         </div>
 
-        <!-- Pannello Centrale: Avvio -->
+        <!-- Pannello Centrale: Titolo + Scelta Mappa + Gioca -->
         <div class="center-panel">
             <div class="logo-title">KRUNKER</div>
-            <div class="logo-sub">3D BROWSER ARENA</div>
+            <div class="logo-sub">MULTIPLAYER 3D ARENA</div>
+
+            <!-- SELETTORE MAPPE CENTRALE -->
+            <div class="map-selector-box">
+                <div class="map-selector-header">2. Seleziona Mappa (<span id="selected-map-name">BURG</span>)</div>
+                <div class="map-grid" id="map-list"></div>
+            </div>
 
             <button class="play-btn" id="btn-play">CLICCA PER GIOCARE</button>
 
             <div class="controls-hint">
-                <div><span class="key-badge">W A S D</span> Movimento &nbsp;|&nbsp; <span class="key-badge">SPAZIO</span> Salta</div>
-                <div><span class="key-badge">SHIFT / C</span> Accovacciati + <b>Slide-Hop (Bhop)</b> in atterraggio</div>
-                <div><span class="key-badge">CLICK SX</span> Spara &nbsp;|&nbsp; <span class="key-badge">CLICK DX</span> Mira (ADS / Scope)</div>
-                <div><span class="key-badge">R</span> Ricarica &nbsp;|&nbsp; <span class="key-badge">Q / E / 1-2</span> Cambia Arma &nbsp;|&nbsp; <span class="key-badge">ESC</span> Menu</div>
+                <div><span class="key-badge">W A S D</span> Muoviti &nbsp;|&nbsp; <span class="key-badge">SPAZIO</span> Salta &nbsp;|&nbsp; <span class="key-badge">SHIFT / C</span> Slide-Hop (Bhop)</div>
+                <div><span class="key-badge">CLICK SX</span> Spara &nbsp;|&nbsp; <span class="key-badge">CLICK DX</span> Mira (ADS) &nbsp;|&nbsp; <span class="key-badge">R</span> Ricarica &nbsp;|&nbsp; <span class="key-badge">1 / 2 / Q</span> Arma</div>
             </div>
         </div>
 
-        <!-- Pannello Destro: Multiplayer P2P & Bot -->
+        <!-- Pannello Destro: Stanza Multiplayer & Bot -->
         <div class="menu-panel">
-            <div class="panel-title">Multigiocatore & Stanza</div>
+            <div class="panel-title">3. Multiplayer & Stanza</div>
 
             <div class="input-group">
                 <label>Il tuo Nickname</label>
-                <input type="text" id="player-name-input" class="text-input" value="Player_1" maxlength="14">
+                <input type="text" id="player-name-input" class="text-input" value="Gianma" maxlength="14">
             </div>
 
             <div class="input-group">
@@ -555,7 +557,7 @@
             <button class="btn-small btn-host" id="btn-create-room">CREA STANZA HOST (P2P)</button>
 
             <div style="margin-top: 12px; display: flex; gap: 6px;">
-                <input type="text" id="join-code-input" class="text-input" placeholder="Codice 4 cifre (es. 4821)" maxlength="6">
+                <input type="text" id="join-code-input" class="text-input" placeholder="Codice 4 cifre" maxlength="6">
                 <button class="btn-small" id="btn-join-room" style="margin-top:0; width: 105px;">ENTRA</button>
             </div>
 
@@ -564,10 +566,6 @@
     </div>
 
 <script>
-/**
- * KRUNKER.IO 3D CLONE - MULTI-MAP & P2P WEBRTC EDITION
- */
-
 // ==================== CLASSI E ARMI ====================
 const CLASSES = [
     {
@@ -577,7 +575,7 @@ const CLASSES = [
         speedMult: 1.0,
         color: 0xffaa00,
         primary: {
-            name: 'Assault Rifle',
+            name: 'AK-47 Rifle',
             damage: 24,
             headshotMult: 1.5,
             fireRate: 110,
@@ -711,12 +709,12 @@ const SECONDARY_WEAPON = {
     accentColor: 0x222222
 };
 
-// ==================== CATALOGO MAPPE ====================
+// ==================== 4 MAPPE COMPLETE ====================
 const MAPS = [
     {
         id: 'burg',
         name: 'Burg',
-        desc: 'Deserto & Container',
+        desc: 'Deserto Classica',
         swatch: 'linear-gradient(90deg, #d7995b, #85b8d0)',
         skyColor: 0x85b8d0,
         fogColor: 0x85b8d0,
@@ -728,34 +726,28 @@ const MAPS = [
             { x: 0, z: -50 }, { x: 0, z: 50 }, { x: -50, z: 0 }, { x: 50, z: 0 }
         ],
         build: (addBlock, addRamp) => {
-            // Struttura centrale e ponte
             addBlock(0, 4, 0, 14, 8, 14, 0x9c7a50);
             addBlock(0, 9, 0, 18, 2, 18, 0x7a5c38);
             addRamp(0, 0, 16, 8, 8, 18, 'N', 0xb38a58);
             addRamp(0, 0, -16, 8, 8, 18, 'S', 0xb38a58);
 
-            // Container Rosso e Blu
             addBlock(-28, 4.5, 12, 10, 9, 24, 0xb83b2b);
             addBlock(28, 4.5, -12, 10, 9, 24, 0x2b5fb8);
 
-            // Muri tattici e torrette laterali
             addBlock(-26, 4, -26, 16, 8, 8, 0xc9a36f);
             addBlock(26, 4, 26, 16, 8, 8, 0xc9a36f);
             addRamp(-26, 0, -14, 6, 8, 14, 'S', 0xa88454);
             addRamp(26, 0, 14, 6, 8, 14, 'N', 0xa88454);
 
-            // Casse per BHop
-            const crates = [
-                [-14, 2, -20], [14, 2, 20], [-36, 2, 34], [36, 2, -34],
-                [-16, 2, 32], [16, 2, -32], [40, 2, 10], [-40, 2, -10]
-            ];
-            crates.forEach(c => addBlock(c[0], c[1], c[2], 4, 4, 4, 0xd49b4b));
+            [[-14, 2, -20], [14, 2, 20], [-36, 2, 34], [36, 2, -34], [-16, 2, 32], [16, 2, -32]].forEach(c => {
+                addBlock(c[0], c[1], c[2], 4, 4, 4, 0xd49b4b);
+            });
         }
     },
     {
         id: 'littletown',
         name: 'Littletown',
-        desc: 'Case & Camion Centrale',
+        desc: 'Case & Camion',
         swatch: 'linear-gradient(90deg, #56ab2f, #e74c3c)',
         skyColor: 0x7ec0ee,
         fogColor: 0x7ec0ee,
@@ -767,39 +759,29 @@ const MAPS = [
             { x: 0, z: -48 }, { x: 0, z: 48 }, { x: -20, z: 45 }, { x: 20, z: -45 }
         ],
         build: (addBlock, addRamp) => {
-            // Strada asfaltata centrale
             addBlock(0, 0.1, 0, 22, 0.2, 136, 0x3b3e42);
 
-            // Casa Rossa (Ovest) + Tetto accessibile
             addBlock(-32, 5, 0, 18, 10, 24, 0xc0392b);
             addBlock(-32, 11, 0, 20, 2, 26, 0x7f1d1d);
             addRamp(-32, 0, 20, 6, 10, 16, 'S', 0x962d22);
 
-            // Casa Blu (Est) + Tetto accessibile
             addBlock(32, 5, 0, 18, 10, 24, 0x2980b9);
             addBlock(32, 11, 0, 20, 2, 26, 0x1b4f72);
             addRamp(32, 0, -20, 6, 10, 16, 'N', 0x21618c);
 
-            // Camion / Bus giallo al centro strada
             addBlock(0, 3.5, -8, 8, 7, 18, 0xf39c12);
             addBlock(0, 2.5, 16, 8, 5, 12, 0xd35400);
 
-            // Siepi e muretti bianchi
             addBlock(-14, 2, -28, 3, 4, 18, 0x2d5a27);
             addBlock(14, 2, 28, 3, 4, 18, 0x2d5a27);
             addBlock(-14, 2, 28, 12, 4, 3, 0xecf0f1);
             addBlock(14, 2, -28, 12, 4, 3, 0xecf0f1);
-
-            // Casse legnose
-            [[-16, 2, 0], [16, 2, 0], [0, 2, -36], [0, 2, 36]].forEach(c => {
-                addBlock(c[0], c[1], c[2], 4, 4, 4, 0xc88a4b);
-            });
         }
     },
     {
         id: 'sandstorm',
         name: 'Sandstorm',
-        desc: 'Bazar & Ponte Antico',
+        desc: 'Bazar & Ponte',
         swatch: 'linear-gradient(90deg, #f3a683, #e15f41)',
         skyColor: 0xf5cd79,
         fogColor: 0xe5b567,
@@ -811,35 +793,27 @@ const MAPS = [
             { x: -45, z: 0 }, { x: 45, z: 0 }, { x: 0, z: -45 }, { x: 0, z: 45 }
         ],
         build: (addBlock, addRamp) => {
-            // Grande Ponte Sopraelevato Est-Ovest
             addBlock(0, 7, 0, 56, 2, 10, 0xb87d4b);
             addBlock(-24, 3.5, 0, 8, 7, 10, 0xa36a38);
             addBlock(24, 3.5, 0, 8, 7, 10, 0xa36a38);
             addRamp(-24, 0, 14, 8, 8, 16, 'S', 0xc28753);
             addRamp(24, 0, -14, 8, 8, 16, 'N', 0xc28753);
 
-            // Tempio Nord e Sud
             addBlock(0, 5, -34, 26, 10, 12, 0xc48b52);
             addBlock(0, 5, 34, 26, 10, 12, 0xc48b52);
 
-            // Pilastri del Bazar
-            const pillars = [
-                [-14, -18], [14, -18], [-14, 18], [14, 18],
-                [-36, -28], [36, -28], [-36, 28], [36, 28]
-            ];
-            pillars.forEach(p => addBlock(p[0], 5, p[1], 5, 10, 5, 0x9e6330));
+            [[-14, -18], [14, -18], [-14, 18], [14, 18], [-36, -28], [36, -28], [-36, 28], [36, 28]].forEach(p => {
+                addBlock(p[0], 5, p[1], 5, 10, 5, 0x9e6330);
+            });
 
-            // Tende / Bancarelle colorate
             addBlock(-14, 2.5, 0, 6, 5, 6, 0xc0392b);
             addBlock(14, 2.5, 0, 6, 5, 6, 0x27ae60);
-            addBlock(0, 2, -16, 5, 4, 5, 0xd49b4b);
-            addBlock(0, 2, 16, 5, 4, 5, 0xd49b4b);
         }
     },
     {
         id: 'kanji',
         name: 'Kanji Neon',
-        desc: 'Cyber-Arena Notturna',
+        desc: 'Notturna Cyber',
         swatch: 'linear-gradient(90deg, #8e44ad, #00e5ff)',
         skyColor: 0x0b0c16,
         fogColor: 0x101324,
@@ -851,11 +825,9 @@ const MAPS = [
             { x: 0, z: -48 }, { x: 0, z: 48 }, { x: -48, z: 0 }, { x: 48, z: 0 }
         ],
         build: (addBlock, addRamp) => {
-            // Torre Cyber Centrale + Anello Neon
             addBlock(0, 5, 0, 12, 10, 12, 0x232738);
             addBlock(0, 10.5, 0, 16, 1.5, 16, 0xff007f);
 
-            // 4 Piattaforme Rialzate con Rampe veloci per Slide-Hop
             addBlock(-26, 4, -26, 16, 8, 16, 0x202436);
             addBlock(-26, 8.3, -26, 16.5, 0.6, 16.5, 0x00e5ff);
             addRamp(-26, 0, -10, 8, 8, 16, 'S', 0x2d324a);
@@ -872,32 +844,24 @@ const MAPS = [
             addBlock(26, 8.3, -26, 16.5, 0.6, 16.5, 0xff007f);
             addRamp(10, 0, -26, 16, 8, 8, 'E', 0x2d324a);
 
-            // Cubi olografici di copertura
-            const neonBoxes = [
-                [-16, 2.5, 0, 0x00e5ff], [16, 2.5, 0, 0x00e5ff],
-                [0, 2.5, -18, 0xff007f], [0, 2.5, 18, 0xff007f]
-            ];
-            neonBoxes.forEach(b => addBlock(b[0], b[1], b[2], 4, 5, 4, b[3]));
+            [[-16, 2.5, 0, 0x00e5ff], [16, 2.5, 0, 0x00e5ff], [0, 2.5, -18, 0xff007f], [0, 2.5, 18, 0xff007f]].forEach(b => {
+                addBlock(b[0], b[1], b[2], 4, 5, 4, b[3]);
+            });
         }
     }
 ];
 
-// ==================== AUDIO SINTETIZZATO (WEB AUDIO API) ====================
+// ==================== AUDIO WEB API ====================
 class SoundFX {
-    constructor() {
-        this.ctx = null;
-    }
+    constructor() { this.ctx = null; }
     init() {
-        if (!this.ctx) {
-            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        }
+        if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
     }
     playShoot(type) {
         if (!this.ctx) return;
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-
         if (type === 'Bolt-Action Sniper') {
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(190, now);
@@ -939,7 +903,7 @@ class SoundFX {
 }
 const sfx = new SoundFX();
 
-// ==================== STATO DEL GIOCO E SCENE THREE.JS ====================
+// ==================== THREE.JS SCENE ====================
 const canvas = document.getElementById('game-canvas');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -955,7 +919,6 @@ const weaponGroup = new THREE.Group();
 camera.add(weaponGroup);
 scene.add(camera);
 
-// Illuminazione
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.68);
 scene.add(ambientLight);
 
@@ -970,12 +933,10 @@ dirLight.shadow.camera.top = 90;
 dirLight.shadow.camera.bottom = -90;
 scene.add(dirLight);
 
-// ==================== GESTIONE E COSTRUZIONE MAPPE ====================
+// ==================== COSTRUZIONE MAPPE ====================
 const mapMeshGroup = new THREE.Group();
 scene.add(mapMeshGroup);
-
-const mapColliders = []; // AABB boxes { minX, maxX, minY, maxY, minZ, maxZ }
-const mapRamps = [];     // Ramps
+const mapColliders = [];
 let currentMapIndex = 0;
 
 function createCheckerTexture(c1, c2) {
@@ -1029,7 +990,6 @@ function loadMap(mapIndex) {
     currentMapIndex = mapIndex;
     const mapCfg = MAPS[mapIndex];
 
-    // Pulisci geometria precedente
     while (mapMeshGroup.children.length > 0) {
         const obj = mapMeshGroup.children[0];
         mapMeshGroup.remove(obj);
@@ -1037,13 +997,10 @@ function loadMap(mapIndex) {
         if (obj.material) obj.material.dispose();
     }
     mapColliders.length = 0;
-    mapRamps.length = 0;
 
-    // Aggiorna Cielo e Nebbia
     scene.background = new THREE.Color(mapCfg.skyColor);
     scene.fog = new THREE.FogExp2(mapCfg.fogColor, 0.0045);
 
-    // Pavimento con griglia stilizzata Krunker
     const hexFloor = '#' + mapCfg.floorColor.toString(16).padStart(6, '0');
     const hexGrid = '#' + mapCfg.gridColor.toString(16).padStart(6, '0');
     const floorTex = createCheckerTexture(hexFloor, hexGrid);
@@ -1056,25 +1013,23 @@ function loadMap(mapIndex) {
     floorMesh.receiveShadow = true;
     mapMeshGroup.add(floorMesh);
 
-    // Muri perimetrali dell'arena
     addBlock(0, 9, -70, 140, 18, 4, mapCfg.wallColor, false);
     addBlock(0, 9, 70, 140, 18, 4, mapCfg.wallColor, false);
     addBlock(-70, 9, 0, 4, 18, 140, mapCfg.wallColor, false);
     addBlock(70, 9, 0, 4, 18, 140, mapCfg.wallColor, false);
 
-    // Costruisci gli edifici specifici della mappa
     mapCfg.build(addBlock, addRamp);
 
-    // Aggiorna label nell'HUD e le card del menu
     document.getElementById('hud-map-label').textContent = `MAPPA: ${mapCfg.name.toUpperCase()}`;
+    document.getElementById('selected-map-name').textContent = mapCfg.name.toUpperCase();
     document.querySelectorAll('.map-card').forEach((card, idx) => {
         card.classList.toggle('active', idx === mapIndex);
     });
 }
 
-// ==================== GIOCATORE LOCALE & STATO FISICO ====================
+// ==================== PLAYER & ARMI ====================
 const player = {
-    name: 'Player_1',
+    name: 'Gianma',
     classIdx: 0,
     hp: 100,
     maxHp: 100,
@@ -1092,14 +1047,13 @@ const player = {
     isCrouching: false,
     isSliding: false,
     slideTimer: 0,
-    weaponSlot: 0, // 0 = primaria, 1 = secondaria
+    weaponSlot: 0,
     ammo: [30, 8],
     isReloading: false,
     lastShotTime: 0,
     isAds: false
 };
 
-// Modello 3D dell'arma in prima persona
 let currentWeaponMesh = null;
 function buildWeaponViewModel() {
     while (weaponGroup.children.length > 0) {
@@ -1108,26 +1062,20 @@ function buildWeaponViewModel() {
     const weap = getActiveWeapon();
     const g = new THREE.Group();
 
-    const bodyGeo = new THREE.BoxGeometry(0.14, 0.18, 0.85);
-    const bodyMat = new THREE.MeshLambertMaterial({ color: weap.modelColor });
-    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.18, 0.85), new THREE.MeshLambertMaterial({ color: weap.modelColor }));
     g.add(body);
 
-    const barrelGeo = new THREE.BoxGeometry(0.06, 0.06, 0.55);
     const barrelMat = new THREE.MeshLambertMaterial({ color: 0x111111 });
-    const barrel = new THREE.Mesh(barrelGeo, barrelMat);
+    const barrel = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.55), barrelMat);
     barrel.position.set(0, 0.04, -0.55);
     g.add(barrel);
 
-    const magGeo = new THREE.BoxGeometry(0.1, 0.25, 0.14);
-    const magMat = new THREE.MeshLambertMaterial({ color: weap.accentColor });
-    const mag = new THREE.Mesh(magGeo, magMat);
+    const mag = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.25, 0.14), new THREE.MeshLambertMaterial({ color: weap.accentColor }));
     mag.position.set(0, -0.18, -0.05);
     g.add(mag);
 
     if (weap.scope) {
-        const scopeGeo = new THREE.BoxGeometry(0.09, 0.09, 0.42);
-        const scopeMesh = new THREE.Mesh(scopeGeo, barrelMat);
+        const scopeMesh = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.42), barrelMat);
         scopeMesh.position.set(0, 0.14, -0.05);
         g.add(scopeMesh);
     }
@@ -1159,46 +1107,32 @@ function spawnLocalPlayer() {
     updateHUD();
 }
 
-// ==================== ENTITÀ (BOT IA + GIOCATORI REMOTI P2P) ====================
-const entities = new Map(); // id -> Entity object
+// ==================== ENTITÀ (BOT + REMOTI) ====================
+const entities = new Map();
 
-function createCharacterMesh(colorHex, nameText) {
+function createCharacterMesh(colorHex) {
     const group = new THREE.Group();
-
-    // Torso (stile boxy Krunker)
-    const torsoGeo = new THREE.BoxGeometry(1.5, 1.7, 0.9);
     const torsoMat = new THREE.MeshLambertMaterial({ color: colorHex });
-    const torso = new THREE.Mesh(torsoGeo, torsoMat);
+    const torso = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.7, 0.9), torsoMat);
     torso.position.y = 1.55;
     torso.castShadow = true;
     group.add(torso);
 
-    // Gambe
-    const legsGeo = new THREE.BoxGeometry(1.3, 0.8, 0.8);
-    const legsMat = new THREE.MeshLambertMaterial({ color: 0x222222 });
-    const legs = new THREE.Mesh(legsGeo, legsMat);
+    const legs = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.8, 0.8), new THREE.MeshLambertMaterial({ color: 0x222222 }));
     legs.position.y = 0.4;
     group.add(legs);
 
-    // Testa (Hitbox Headshot separata)
-    const headGeo = new THREE.BoxGeometry(1.15, 1.15, 1.15);
-    const headMat = new THREE.MeshLambertMaterial({ color: 0xffdbac });
-    const head = new THREE.Mesh(headGeo, headMat);
+    const head = new THREE.Mesh(new THREE.BoxGeometry(1.15, 1.15, 1.15), new THREE.MeshLambertMaterial({ color: 0xffdbac }));
     head.position.y = 2.95;
     head.castShadow = true;
     head.userData.isHead = true;
     group.add(head);
 
-    // Cappellino / Elmetto colore classe
-    const hatGeo = new THREE.BoxGeometry(1.22, 0.35, 1.25);
-    const hat = new THREE.Mesh(hatGeo, torsoMat);
+    const hat = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.35, 1.25), torsoMat);
     hat.position.y = 3.45;
     group.add(hat);
 
-    // Arma in mano
-    const gunGeo = new THREE.BoxGeometry(0.25, 0.25, 1.4);
-    const gunMat = new THREE.MeshLambertMaterial({ color: 0x111111 });
-    const gun = new THREE.Mesh(gunGeo, gunMat);
+    const gun = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.25, 1.4), new THREE.MeshLambertMaterial({ color: 0x111111 }));
     gun.position.set(0.85, 1.75, -0.5);
     group.add(gun);
 
@@ -1220,7 +1154,7 @@ function syncBotsCount(targetCount) {
         const cls = CLASSES[idx % CLASSES.length];
         const spawns = MAPS[currentMapIndex].spawns;
         const sp = spawns[idx % spawns.length];
-        const mesh = createCharacterMesh(cls.color, botNames[idx % botNames.length]);
+        const mesh = createCharacterMesh(cls.color);
 
         const botObj = {
             id,
@@ -1253,7 +1187,6 @@ let mouseSensitivity = 2.2;
 window.addEventListener('keydown', (e) => {
     keys[e.code] = true;
     if (!isPlaying) return;
-
     if (e.code === 'KeyR') triggerReload();
     if (e.code === 'KeyQ' || e.code === 'KeyE' || e.code === 'Digit1' || e.code === 'Digit2') {
         if (e.code === 'Digit1') player.weaponSlot = 0;
@@ -1266,9 +1199,7 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-window.addEventListener('keyup', (e) => {
-    keys[e.code] = false;
-});
+window.addEventListener('keyup', (e) => { keys[e.code] = false; });
 
 let mouseDownLeft = false;
 window.addEventListener('mousedown', (e) => {
@@ -1316,7 +1247,7 @@ function updateScopeUI() {
     }
 }
 
-// ==================== SISTEMA DI SPARO & RAYCASTING ====================
+// ==================== SPARO & RAYCAST ====================
 const raycaster = new THREE.Raycaster();
 const activeTracers = [];
 
@@ -1361,20 +1292,16 @@ function tryShoot() {
     sfx.playShoot(weap.name);
     updateHUD();
 
-    // Shotgun Impulse Jump se si spara verso il basso in aria
     if (weap.shotgunBoost && !player.onGround && player.pitch < -0.5) {
         player.vel.y += weap.shotgunBoost;
     }
 
-    // Rinculo visivo arma
     if (currentWeaponMesh) {
         currentWeaponMesh.position.z += 0.14;
         currentWeaponMesh.rotation.x += 0.09;
     }
 
     const spread = player.isAds ? weap.adsSpread : weap.spread;
-
-    // Raccogli le mesh colpi (muri + nemici)
     const targetMeshes = mapColliders.map(c => c.mesh);
     entities.forEach(ent => {
         ent.mesh.head.userData.entityId = ent.id;
@@ -1408,12 +1335,8 @@ function tryShoot() {
         createBulletTracer(muzzlePos, endPoint);
     }
 
-    // Rinculo visuale
     player.pitch = Math.min(Math.PI / 2 - 0.05, player.pitch + weap.recoil);
-
-    if (player.ammo[player.weaponSlot] === 0) {
-        triggerReload();
-    }
+    if (player.ammo[player.weaponSlot] === 0) triggerReload();
 }
 
 function applyDamageToEntity(entId, dmg, isHead) {
@@ -1440,7 +1363,6 @@ function applyDamageToEntity(entId, dmg, isHead) {
             updateLeaderboard();
         }
     } else {
-        // Giocatore remoto via P2P
         broadcastNetMessage({
             type: 'hit',
             targetId: entId,
@@ -1451,7 +1373,7 @@ function applyDamageToEntity(entId, dmg, isHead) {
     }
 }
 
-// ==================== FISICA SLIDE-HOPPING & COLLISIONI AABB ====================
+// ==================== FISICA SLIDE-HOPPING & COLLISIONI ====================
 const GRAVITY = 42.0;
 const JUMP_FORCE = 15.2;
 const BASE_SPEED = 18.0;
@@ -1460,7 +1382,6 @@ function updatePlayerPhysics(dt) {
     const cls = CLASSES[player.classIdx];
     const wantCrouch = keys['ShiftLeft'] || keys['ShiftRight'] || keys['KeyC'];
 
-    // Gestione Slide-Hop (Bhop tipico di Krunker)
     if (wantCrouch && !player.isCrouching && !player.onGround) {
         player.isCrouching = true;
     } else if (wantCrouch && player.onGround && !player.isSliding) {
@@ -1468,7 +1389,6 @@ function updatePlayerPhysics(dt) {
         if (horizSpeed > 9.0) {
             player.isSliding = true;
             player.slideTimer = 0.52;
-            // Boost direzionale in scivolata
             player.vel.x *= 1.19;
             player.vel.z *= 1.19;
         }
@@ -1480,16 +1400,12 @@ function updatePlayerPhysics(dt) {
 
     if (player.isSliding) {
         player.slideTimer -= dt;
-        if (player.slideTimer <= 0 || !player.onGround) {
-            player.isSliding = false;
-        }
+        if (player.slideTimer <= 0 || !player.onGround) player.isSliding = false;
     }
 
-    // Altezza occhi fluida
     const targetH = player.isCrouching ? player.crouchHeight : player.height;
     player.currentHeight += (targetH - player.currentHeight) * Math.min(1, dt * 14);
 
-    // Input direzionale
     let forward = 0, right = 0;
     if (keys['KeyW'] || keys['ArrowUp']) forward += 1;
     if (keys['KeyS'] || keys['ArrowDown']) forward -= 1;
@@ -1507,17 +1423,14 @@ function updatePlayerPhysics(dt) {
         player.vel.x += (moveDir.x * maxSpeed - player.vel.x) * Math.min(1, accel * dt);
         player.vel.z += (moveDir.z * maxSpeed - player.vel.z) * Math.min(1, accel * dt);
     } else {
-        // Attrito ridotto durante lo slide
         player.vel.x *= (1 - 1.2 * dt);
         player.vel.z *= (1 - 1.2 * dt);
     }
 
-    // Salto (concatenabile tenendo premuto Spazio per Bhop)
     if (keys['Space'] && player.onGround) {
         player.vel.y = JUMP_FORCE;
         player.onGround = false;
         if (player.isSliding) {
-            // Slide-hop momentum bonus!
             player.vel.x *= 1.08;
             player.vel.z *= 1.08;
             const spd = Math.hypot(player.vel.x, player.vel.z);
@@ -1529,10 +1442,8 @@ function updatePlayerPhysics(dt) {
         }
     }
 
-    // Gravità
     player.vel.y -= GRAVITY * dt;
 
-    // Movimento e risoluzione collisioni AABB (X, Z, Y separati + Step-up automatico)
     player.pos.x += player.vel.x * dt;
     resolveCollisions('x');
 
@@ -1548,7 +1459,6 @@ function updatePlayerPhysics(dt) {
     }
     resolveCollisions('y');
 
-    // Aggiorna Camera e FOV dinamico
     camera.position.set(player.pos.x, player.pos.y + player.currentHeight, player.pos.z);
     camera.rotation.order = 'YXZ';
     camera.rotation.y = player.yaw;
@@ -1559,7 +1469,6 @@ function updatePlayerPhysics(dt) {
     camera.fov += (targetFov - camera.fov) * Math.min(1, dt * 14);
     camera.updateProjectionMatrix();
 
-    // Animazione arma First Person
     if (currentWeaponMesh) {
         const targetX = player.isAds ? 0.0 : 0.32;
         const targetY = player.isAds ? -0.17 : -0.28;
@@ -1570,7 +1479,6 @@ function updatePlayerPhysics(dt) {
         currentWeaponMesh.rotation.x += (0 - currentWeaponMesh.rotation.x) * Math.min(1, dt * 12);
     }
 
-    // Speedometer HUD
     const speedVal = Math.round(Math.hypot(player.vel.x, player.vel.z) * 10);
     document.getElementById('speedometer').textContent = `VELOCITÀ: ${speedVal} u/s`;
 }
@@ -1587,7 +1495,6 @@ function resolveCollisions(axis) {
             player.pos.z + r > b.minZ && player.pos.z - r < b.maxZ
         ) {
             if (axis === 'x') {
-                // Step-up per salire gradini delle rampe automaticamente
                 if (b.maxY - player.pos.y <= 1.15 && player.vel.y <= 0) {
                     player.pos.y = b.maxY;
                     player.onGround = true;
@@ -1619,7 +1526,7 @@ function resolveCollisions(axis) {
     }
 }
 
-// ==================== INTELLIGENZA ARTIFICIALE BOT ====================
+// ==================== BOT IA ====================
 function updateBots(dt) {
     entities.forEach(bot => {
         if (!bot.isBot) return;
@@ -1631,7 +1538,6 @@ function updateBots(dt) {
         if (bot.changeDirTimer <= 0) {
             bot.changeDirTimer = 1.2 + Math.random() * 1.5;
             if (distToPlayer < 45 && Math.random() < 0.7) {
-                // Insegui o strafe verso il giocatore
                 bot.targetDir.copy(toPlayer).normalize();
                 bot.targetDir.x += (Math.random() - 0.5) * 0.8;
                 bot.targetDir.z += (Math.random() - 0.5) * 0.8;
@@ -1647,7 +1553,6 @@ function updateBots(dt) {
         bot.pos.x += bot.targetDir.x * botSpeed * dt;
         bot.pos.z += bot.targetDir.z * botSpeed * dt;
 
-        // Rimbalzo sui bordi arena e ostacoli
         if (Math.abs(bot.pos.x) > 64) { bot.pos.x = Math.sign(bot.pos.x) * 64; bot.targetDir.x *= -1; }
         if (Math.abs(bot.pos.z) > 64) { bot.pos.z = Math.sign(bot.pos.z) * 64; bot.targetDir.z *= -1; }
 
@@ -1661,7 +1566,6 @@ function updateBots(dt) {
             }
         }
 
-        // Ruota verso il giocatore se vicino
         if (distToPlayer < 45) {
             bot.yaw = Math.atan2(-toPlayer.x, -toPlayer.z);
         } else {
@@ -1671,7 +1575,6 @@ function updateBots(dt) {
         bot.mesh.group.position.copy(bot.pos);
         bot.mesh.group.rotation.y = bot.yaw;
 
-        // Sparo Bot contro giocatore se in linea di vista
         bot.shootTimer -= dt;
         if (isPlaying && distToPlayer < 42 && bot.shootTimer <= 0) {
             bot.shootTimer = 1.15 + Math.random() * 0.8;
@@ -1682,10 +1585,7 @@ function updateBots(dt) {
             const wallHits = raycaster.intersectObjects(mapColliders.map(c => c.mesh), false);
 
             if (wallHits.length === 0 || wallHits[0].distance > distToPlayer) {
-                // Il bot vede il giocatore
-                if (Math.random() < 0.42) {
-                    takeDamage(12, bot.name);
-                }
+                if (Math.random() < 0.42) takeDamage(12, bot.name);
                 createBulletTracer(botEye, playerAim);
             }
         }
@@ -1708,7 +1608,7 @@ function takeDamage(amount, attackerName) {
     }
 }
 
-// ==================== MULTIPLAYER P2P (PEERJS WEBRTC) ====================
+// ==================== MULTIPLAYER P2P (PEERJS) ====================
 let peer = null;
 let isHost = false;
 let hostConn = null;
@@ -1731,12 +1631,9 @@ function initPeer(customCode) {
         if (!isHost) return;
         clientConns.push(conn);
         conn.on('open', () => {
-            // Invia subito la mappa attuale al nuovo giocatore
             conn.send({ type: 'mapChange', mapIndex: currentMapIndex });
         });
-        conn.on('data', (data) => {
-            handleNetworkData(data, conn);
-        });
+        conn.on('data', (data) => handleNetworkData(data, conn));
         conn.on('close', () => {
             const idx = clientConns.indexOf(conn);
             if (idx > -1) clientConns.splice(idx, 1);
@@ -1759,17 +1656,14 @@ function broadcastNetMessage(msg, excludeConn = null) {
 }
 
 function handleNetworkData(data, senderConn) {
-    if (isHost && senderConn) {
-        // Ritrasmetti agli altri client connessi
-        broadcastNetMessage(data, senderConn);
-    }
+    if (isHost && senderConn) broadcastNetMessage(data, senderConn);
 
     if (data.type === 'state') {
         if (data.id === myPeerId) return;
         let ent = entities.get(data.id);
         if (!ent) {
             const cls = CLASSES[data.classIdx || 0];
-            const mesh = createCharacterMesh(cls.color, data.name);
+            const mesh = createCharacterMesh(cls.color);
             ent = {
                 id: data.id,
                 name: data.name,
@@ -1790,9 +1684,7 @@ function handleNetworkData(data, senderConn) {
         ent.mesh.group.position.copy(ent.pos);
         ent.mesh.group.rotation.y = data.yaw;
     } else if (data.type === 'hit') {
-        if (data.targetId === myPeerId) {
-            takeDamage(data.dmg, data.attackerName);
-        }
+        if (data.targetId === myPeerId) takeDamage(data.dmg, data.attackerName);
     } else if (data.type === 'mapChange') {
         if (data.mapIndex !== currentMapIndex) {
             loadMap(data.mapIndex);
@@ -1801,7 +1693,6 @@ function handleNetworkData(data, senderConn) {
     }
 }
 
-// Invia posizione P2P 20 volte al secondo
 setInterval(() => {
     if (!peer || (!isHost && !hostConn)) return;
     broadcastNetMessage({
@@ -1818,7 +1709,7 @@ setInterval(() => {
     });
 }, 50);
 
-// ==================== UI, HUD & MENU SETUP ====================
+// ==================== INTERFACCIA & EVENTI ====================
 function updateHUD() {
     const cls = CLASSES[player.classIdx];
     const weap = getActiveWeapon();
@@ -1855,7 +1746,7 @@ function addKillfeed(killer, victim, isHead) {
     setTimeout(() => { if (div.parentNode) div.parentNode.removeChild(div); }, 4000);
 }
 
-// Popola Classi nel Menu
+// Popola Classi
 const classListEl = document.getElementById('class-list');
 CLASSES.forEach((cls, idx) => {
     const card = document.createElement('div');
@@ -1875,7 +1766,7 @@ CLASSES.forEach((cls, idx) => {
     classListEl.appendChild(card);
 });
 
-// Popola Selettore Mappe nel Menu
+// Popola Selettore Mappe Centrale
 const mapListEl = document.getElementById('map-list');
 MAPS.forEach((m, idx) => {
     const card = document.createElement('div');
@@ -1888,7 +1779,6 @@ MAPS.forEach((m, idx) => {
     card.addEventListener('click', () => {
         loadMap(idx);
         spawnLocalPlayer();
-        // Riposiziona i Bot sulla nuova mappa
         const spawns = MAPS[idx].spawns;
         let i = 0;
         entities.forEach(ent => {
@@ -1899,15 +1789,11 @@ MAPS.forEach((m, idx) => {
                 i++;
             }
         });
-        // Se sei Host, aggiorna la mappa anche per tutti gli amici connessi
-        if (isHost) {
-            broadcastNetMessage({ type: 'mapChange', mapIndex: idx });
-        }
+        if (isHost) broadcastNetMessage({ type: 'mapChange', mapIndex: idx });
     });
     mapListEl.appendChild(card);
 });
 
-// Controlli UI Menu
 document.getElementById('sens-slider').addEventListener('input', (e) => {
     mouseSensitivity = parseFloat(e.target.value);
     document.getElementById('sens-val').textContent = mouseSensitivity.toFixed(1);
@@ -1920,7 +1806,7 @@ document.getElementById('bot-slider').addEventListener('input', (e) => {
 });
 
 document.getElementById('player-name-input').addEventListener('input', (e) => {
-    player.name = e.target.value.trim() || 'Player_1';
+    player.name = e.target.value.trim() || 'Gianma';
     updateLeaderboard();
 });
 
@@ -1949,7 +1835,6 @@ document.getElementById('btn-join-room').addEventListener('click', () => {
     }, 900);
 });
 
-// Pointer Lock Start
 document.getElementById('btn-play').addEventListener('click', () => {
     sfx.init();
     canvas.requestPointerLock();
@@ -1976,7 +1861,7 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// ==================== INIZIALIZZAZIONE & GAME LOOP ====================
+// ==================== GAME LOOP ====================
 loadMap(0);
 spawnLocalPlayer();
 syncBotsCount(4);
@@ -1989,19 +1874,15 @@ function animate(now) {
     lastFrameTime = now;
 
     if (isPlaying) {
-        if (mouseDownLeft && getActiveWeapon().auto) {
-            tryShoot();
-        }
+        if (mouseDownLeft && getActiveWeapon().auto) tryShoot();
         updatePlayerPhysics(dt);
     } else {
-        // Rotazione panoramica della visuale quando sei nel menu
         camera.position.set(Math.sin(now * 0.0003) * 48, 22, Math.cos(now * 0.0003) * 48);
         camera.lookAt(0, 4, 0);
     }
 
     updateBots(dt);
 
-    // Rimuovi scie dei proiettili scadute
     for (let i = activeTracers.length - 1; i >= 0; i--) {
         if (now - activeTracers[i].time > 75) {
             scene.remove(activeTracers[i].line);
