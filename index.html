@@ -2063,19 +2063,64 @@
             Entities.forEach((bot) => {
                 if (!bot.isBot) return;
 
+                // Scansione bersagli: Giocatore umano (se in partita) + tutti gli altri Bot
+                let bestTarget = null;
+                let bestPriorityDist = Infinity;
+                const botEye = new THREE.Vector3(bot.x, bot.y + 3.8, bot.z);
+
+                // 1) Valuta il giocatore locale (priorità 0.85x a parità di distanza)
+                if (isPlaying) {
+                    const dxP = Player.x - bot.x;
+                    const dzP = Player.z - bot.z;
+                    const distP = Math.hypot(dxP, dzP);
+                    if (distP < 62) {
+                        const playerAim = new THREE.Vector3(Player.x, Player.y + 2.6, Player.z);
+                        const dirP = playerAim.clone().sub(botEye).normalize();
+                        raycaster.set(botEye, dirP);
+                        const wallHits = raycaster.intersectObjects(mapMeshes, false);
+                        if (wallHits.length === 0 || wallHits[0].distance > distP) {
+                            bestPriorityDist = distP * 0.85;
+                            bestTarget = { isLocalPlayer: true, x: Player.x, y: Player.y, z: Player.z, dist: distP };
+                        }
+                    }
+                }
+
+                // 2) Valuta tutti gli altri Bot e giocatori remoti nella mappa
+                Entities.forEach((other) => {
+                    if (other.id === bot.id) return;
+                    const dxO = other.x - bot.x;
+                    const dzO = other.z - bot.z;
+                    const distO = Math.hypot(dxO, dzO);
+                    if (distO < 62) {
+                        const effectiveDist = other.isBot ? distO : distO * 0.85;
+                        if (effectiveDist < bestPriorityDist) {
+                            const otherAim = new THREE.Vector3(other.x, other.y + 2.6, other.z);
+                            const dirO = otherAim.clone().sub(botEye).normalize();
+                            raycaster.set(botEye, dirO);
+                            const wallHits = raycaster.intersectObjects(mapMeshes, false);
+                            if (wallHits.length === 0 || wallHits[0].distance > distO) {
+                                bestPriorityDist = effectiveDist;
+                                bestTarget = { isLocalPlayer: false, entity: other, x: other.x, y: other.y, z: other.z, dist: distO };
+                            }
+                        }
+                    }
+                });
+
                 if (now > bot.nextThink) {
-                    bot.nextThink = now + 1800 + Math.random() * 2000;
-                    const wp = spawns[Math.floor(Math.random() * spawns.length)];
-                    bot.targetX = wp.x + (Math.random() - 0.5) * 30;
-                    bot.targetZ = wp.z + (Math.random() - 0.5) * 30;
+                    bot.nextThink = now + 1500 + Math.random() * 1800;
+                    if (bestTarget && bestTarget.dist > 14) {
+                        // Muoviti e fai strafe verso il bersaglio acquisito
+                        bot.targetX = bestTarget.x + (Math.random() - 0.5) * 18;
+                        bot.targetZ = bestTarget.z + (Math.random() - 0.5) * 18;
+                    } else {
+                        const wp = spawns[Math.floor(Math.random() * spawns.length)];
+                        bot.targetX = wp.x + (Math.random() - 0.5) * 30;
+                        bot.targetZ = wp.z + (Math.random() - 0.5) * 30;
+                    }
                     if (Math.random() < 0.45 && bot.vy === 0) {
                         bot.vy = 13.5;
                     }
                 }
-
-                const dxToPlayer = Player.x - bot.x;
-                const dzToPlayer = Player.z - bot.z;
-                const distToPlayer = Math.hypot(dxToPlayer, dzToPlayer);
 
                 const moveAngle = Math.atan2(bot.targetX - bot.x, bot.targetZ - bot.z);
                 const speed = 13.5;
@@ -2089,28 +2134,55 @@
 
                 resolveWorldCollisions(bot, 0.9, 4.4);
 
-                if (distToPlayer < 58 && isPlaying) {
-                    bot.yaw = Math.atan2(-dxToPlayer, -dzToPlayer);
+                if (bestTarget) {
+                    const dxT = bestTarget.x - bot.x;
+                    const dzT = bestTarget.z - bot.z;
+                    bot.yaw = Math.atan2(-dxT, -dzT);
 
-                    if (now - bot.lastShot > 720 + Math.random() * 480) {
+                    if (now - bot.lastShot > 680 + Math.random() * 450) {
                         bot.lastShot = now;
-                        const eyeStart = new THREE.Vector3(bot.x, bot.y + 3.8, bot.z);
-                        const playerCenter = new THREE.Vector3(Player.x, Player.y + 2.6, Player.z);
-                        const dir = playerCenter.clone().sub(eyeStart).normalize();
+                        const targetCenter = new THREE.Vector3(bestTarget.x, bestTarget.y + 2.6, bestTarget.z);
+                        const hitRoll = Math.random();
+                        const endPt = targetCenter.clone().add(new THREE.Vector3(
+                            (Math.random() - 0.5) * 2.0,
+                            (Math.random() - 0.5) * 1.6,
+                            (Math.random() - 0.5) * 2.0
+                        ));
+                        spawnTracer(botEye, endPt, 0xf87171);
 
-                        raycaster.set(eyeStart, dir);
-                        const wallHits = raycaster.intersectObjects(mapMeshes, false);
-                        if (wallHits.length === 0 || wallHits[0].distance > distToPlayer) {
-                            const hitRoll = Math.random();
-                            const endPt = playerCenter.clone().add(new THREE.Vector3(
-                                (Math.random() - 0.5) * 2.2,
-                                (Math.random() - 0.5) * 1.8,
-                                (Math.random() - 0.5) * 2.2
-                            ));
-                            spawnTracer(eyeStart, endPt, 0xf87171);
-
+                        const wepName = CLASSES[bot.classId].primary.name;
+                        if (bestTarget.isLocalPlayer) {
                             if (hitRoll < 0.34) {
-                                takeLocalDamage(11, bot.name, CLASSES[bot.classId].primary.name, null);
+                                takeLocalDamage(11, bot.name, wepName, null);
+                            }
+                        } else if (bestTarget.entity && bestTarget.entity.isBot) {
+                            // Combattimento Bot contro Bot
+                            if (hitRoll < 0.42) {
+                                const victim = bestTarget.entity;
+                                const isHead = Math.random() < 0.25;
+                                const dmg = isHead ? 32 : 18;
+                                victim.hp -= dmg;
+                                spawnImpactParticles(targetCenter, isHead ? 0xfacc15 : 0xef4444, 4);
+                                victim.nameplate.userData.updatePlate(victim.name, Math.max(0, victim.hp / victim.maxHp));
+
+                                if (victim.hp <= 0) {
+                                    spawnImpactParticles(new THREE.Vector3(victim.x, victim.y + 2.5, victim.z), 0xef4444, 12);
+                                    bot.kills = (bot.kills || 0) + 1;
+                                    bot.score = (bot.score || 0) + (isHead ? 100 : 50);
+                                    // Il Bot killer recupera +30 HP
+                                    bot.hp = Math.min(bot.maxHp + 50, bot.hp + 30);
+                                    bot.nameplate.userData.updatePlate(bot.name, Math.min(1, bot.hp / bot.maxHp));
+
+                                    addKillfeed(bot.name, victim.name, wepName, isHead);
+
+                                    const sp = spawns[Math.floor(Math.random() * spawns.length)];
+                                    victim.x = sp.x;
+                                    victim.y = sp.y;
+                                    victim.z = sp.z;
+                                    victim.hp = victim.maxHp;
+                                    victim.nameplate.userData.updatePlate(victim.name, 1.0);
+                                    updateLeaderboardUI();
+                                }
                             }
                         }
                     }
