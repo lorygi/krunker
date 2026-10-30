@@ -606,8 +606,8 @@
                     auto: false,
                     ammo: 4,
                     fireRate: 900,
-                    damage: 80,
-                    headMult: 1.55, // 124 Headshot = Instant Kill
+                    damage: 160, // One-shot kill garantito su corpo e testa
+                    headMult: 1.5,
                     reloadTime: 1600,
                     spread: 0.032,
                     adsSpread: 0.0, // Pinpoint laser accurate when scoped
@@ -1421,7 +1421,7 @@
         };
 
         // Health-on-Kill Mechanic (+50 HP for Players / Local, +30 HP for Bots in a Server)
-        function applyHealOnKill(victimIsBot) {
+        function applyHealOnKill(victimIsBot, victimName = '') {
             const inServer = GameNet.isInServer();
             const healAmount = inServer ? (victimIsBot ? 30 : 50) : 50;
 
@@ -1430,9 +1430,9 @@
             SoundFX.playHeal();
             updateHUD();
 
-            // Show animated +HP badge above health bar
+            // Show animated +HP badge above health bar with victim name
             const healEl = document.getElementById('hp-heal-popup');
-            healEl.textContent = `+${healAmount} HP ❤️`;
+            healEl.textContent = victimName ? `+${healAmount} HP ❤️ • ${victimName}` : `+${healAmount} HP ❤️`;
             healEl.classList.remove('hidden', 'heal-anim');
             void healEl.offsetWidth;
             healEl.classList.add('heal-anim');
@@ -1921,10 +1921,10 @@
                 Player.streak++;
 
                 // Grant Health-on-Kill (+50 HP for Player / Local, +30 HP for Bot in Server)
-                const healedHp = applyHealOnKill(target.isBot);
+                const healedHp = applyHealOnKill(target.isBot, target.name);
 
                 let pts = 50;
-                const tags = ['+50 ELIMINAZIONE', `+${healedHp} HP ❤️`];
+                const tags = [`ELIMINATO ${target.name} • +${healedHp} HP ❤️`];
                 if (isHead) { pts += 50; tags.push('+50 HEADSHOT 🎯'); }
                 if (!Player.onGround) { pts += 25; tags.push('+25 MID-AIR 🦅'); }
 
@@ -1953,7 +1953,7 @@
                 spawnImpactParticles(new THREE.Vector3(ent.x, ent.y + 2, ent.z), 0xfacc15, 14);
                 addKillfeed(Player.name, ent.name, 'NUKE ☢️', true);
                 Player.kills++;
-                applyHealOnKill(ent.isBot);
+                applyHealOnKill(ent.isBot, ent.name);
                 if (ent.isBot) {
                     const spawns = MAPS[currentMapId].spawns;
                     const sp = spawns[Math.floor(Math.random() * spawns.length)];
@@ -2332,8 +2332,9 @@
                     }
                 } else if (msg.type === 'killConfirm') {
                     if (msg.killerId === this.getLocalId()) {
-                        const healed = applyHealOnKill(false); // +50 HP for killing a real player
-                        showScorePopup(`+50 KILL GIOCATORE  +${healed} HP ❤️`);
+                        const victimLabel = msg.victimName || 'GIOCATORE';
+                        const healed = applyHealOnKill(false, victimLabel); // +50 HP for killing a real player
+                        showScorePopup(`ELIMINATO ${victimLabel} • +${healed} HP ❤️`);
                     }
                 } else if (msg.type === 'mapChange') {
                     if (msg.mapId && msg.mapId !== currentMapId) {
