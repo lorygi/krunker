@@ -129,10 +129,16 @@
                 <div><span class="text-cyan-400 font-bold" id="hud-speed">0</span> <span class="text-xs text-gray-300">SPD (BHOP)</span></div>
                 <div class="h-3 w-[1px] bg-white/20"></div>
                 <div><span class="text-emerald-400 font-bold" id="hud-map-badge">BURG</span></div>
+                <div class="h-3 w-[1px] bg-white/20"></div>
+                <div><span class="text-purple-400 font-bold" id="hud-mode-badge">FFA</span></div>
             </div>
             <div id="hud-room-badge" class="bg-black/65 px-3 py-1 rounded text-xs text-gray-200 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span id="hud-room-text">MODALITÀ: LOCALE (+50 HP / KILL)</span>
+            </div>
+            <!-- Gun Game Tier Badge -->
+            <div id="gungame-badge" class="hidden bg-purple-600/90 text-white font-extrabold text-xs px-2.5 py-0.5 rounded w-fit tracking-wider border border-purple-300">
+                🏆 GUN GAME: <span id="gungame-tier-text">TIER 1/7 (DEAGLE)</span>
             </div>
             <!-- Slide-hop indicator -->
             <div id="bhop-badge" class="hidden bg-cyan-500/85 text-black font-extrabold text-xs px-2.5 py-0.5 rounded w-fit tracking-wider">
@@ -146,7 +152,7 @@
                 04:00
             </div>
             <div class="text-[11px] text-white/75 bg-black/45 px-2.5 py-0.5 rounded mt-1">
-                [ESC] MENU &nbsp;|&nbsp; [SHIFT/C] SLIDE-HOP &nbsp;|&nbsp; [R] RICARICA &nbsp;|&nbsp; [Q/1/2] CAMBIA ARMA
+                [ESC] MENU &nbsp;|&nbsp; [SHIFT/C] SLIDE-HOP &nbsp;|&nbsp; [1/2/3/Q] ARMI & COLTELLO &nbsp;|&nbsp; [DX COLTELLO] LANCIA 🔪
             </div>
         </div>
 
@@ -307,7 +313,7 @@
             <div class="lg:col-span-4 flex flex-col items-center justify-center gap-3 text-center px-1">
                 <div class="krunker-card rounded-2xl p-5 w-full flex flex-col items-center border-2 border-amber-400/60">
                     <!-- Prominent Map Selector -->
-                    <div class="w-full bg-black/65 p-3 rounded-xl border-2 border-cyan-400/60 mb-4">
+                    <div class="w-full bg-black/65 p-3 rounded-xl border-2 border-cyan-400/60 mb-3">
                         <div class="flex items-center justify-between mb-2">
                             <span class="text-xs font-extrabold text-cyan-400 tracking-wider flex items-center gap-1.5">
                                 <i class="fa-solid fa-map-location-dot"></i> 2. SELEZIONA MAPPA
@@ -318,6 +324,21 @@
                         </div>
                         <div id="map-list" class="grid grid-cols-2 gap-2">
                             <!-- Populated by JS with 4 Maps -->
+                        </div>
+                    </div>
+
+                    <!-- Prominent Game Mode Selector -->
+                    <div class="w-full bg-black/65 p-3 rounded-xl border-2 border-purple-400/60 mb-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-extrabold text-purple-400 tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-gamepad"></i> MODALITÀ DI GIOCO
+                            </span>
+                            <span id="menu-active-mode-label" class="text-[11px] font-black bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
+                                FFA
+                            </span>
+                        </div>
+                        <div id="mode-list" class="grid grid-cols-2 gap-2">
+                            <!-- Populated by JS with 4 Game Modes -->
                         </div>
                     </div>
 
@@ -333,11 +354,11 @@
                     <!-- Quick Controls Grid -->
                     <div class="grid grid-cols-2 gap-1.5 w-full mt-4 text-left text-[11px] bg-black/50 p-2.5 rounded-lg border border-white/10">
                         <div><span class="text-amber-400 font-bold">WASD</span> : Movimento</div>
-                        <div><span class="text-amber-400 font-bold">CLICK SX</span> : Spara</div>
-                        <div><span class="text-amber-400 font-bold">CLICK DX</span> : Mira (ADS/Scope)</div>
+                        <div><span class="text-amber-400 font-bold">CLICK SX</span> : Spara / Fendente</div>
+                        <div><span class="text-amber-400 font-bold">CLICK DX</span> : Mira / Lancia 🔪</div>
                         <div><span class="text-amber-400 font-bold">SPAZIO</span> : Salta</div>
                         <div><span class="text-cyan-400 font-bold">SHIFT / C</span> : Slide-Hop (Bhop)</div>
-                        <div><span class="text-amber-400 font-bold">R / Q</span> : Ricarica / Secondaria</div>
+                        <div><span class="text-amber-400 font-bold">1 / 2 / 3 / Q</span> : Armi & Coltello</div>
                     </div>
                 </div>
             </div>
@@ -540,12 +561,197 @@
                 gain.connect(this.ctx.destination);
                 osc.start(now);
                 osc.stop(now + 0.12);
+            },
+            playKnifeSlash() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(680, now);
+                osc.frequency.exponentialRampToValueAtTime(140, now + 0.11);
+                gain.gain.setValueAtTime(0.22, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.12);
+            },
+            playKnifeThrow() {
+                this.init();
+                if (!this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(920, now);
+                osc.frequency.exponentialRampToValueAtTime(260, now + 0.16);
+                gain.gain.setValueAtTime(0.28, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.17);
             }
         };
 
         // ============================================================================
-        // 2. KRUNKER CLASSES & WEAPONS DEFINITIONS (LOW RECOIL & SNAPPY HITSCAN)
+        // 2. KRUNKER CLASSES, COMBAT KNIFE & GAME MODES DEFINITIONS
         // ============================================================================
+        const KNIFE_WEAPON = {
+            name: 'COMBAT KNIFE 🔪',
+            type: 'knife',
+            auto: false,
+            ammo: 1,
+            fireRate: 360,
+            damage: 85,
+            headMult: 1.55, // ~132 headshot
+            throwDamage: 200, // Instant 1-shot kill on thrown knife hit
+            reloadTime: 500,
+            spread: 0.0,
+            adsSpread: 0.0,
+            recoil: 0.0,
+            pellets: 1,
+            scope: false,
+            adsFovMult: 1.0,
+            speedBonus: 1.18
+        };
+
+        const GAME_MODES = {
+            ffa: {
+                id: 'ffa',
+                name: 'FFA Classica',
+                shortName: 'FFA',
+                subtitle: 'Tutte le Classi + Coltello',
+                swatch: 'linear-gradient(90deg, #f59e0b, #10b981)'
+            },
+            gungame: {
+                id: 'gungame',
+                name: 'Gun Game',
+                shortName: 'GUN GAME',
+                subtitle: '7 Armi a Scalare per Kill',
+                swatch: 'linear-gradient(90deg, #a855f7, #ec4899)'
+            },
+            sniperonly: {
+                id: 'sniperonly',
+                name: 'Sniper & Knife',
+                shortName: 'SNIPER ONLY',
+                subtitle: 'Solo Cecchino 1-Shot & Lame',
+                swatch: 'linear-gradient(90deg, #ef4444, #f97316)'
+            },
+            knifeonly: {
+                id: 'knifeonly',
+                name: 'Only Knife',
+                shortName: 'ONLY KNIFE',
+                subtitle: 'Fendenti & Lancio Coltello',
+                swatch: 'linear-gradient(90deg, #06b6d4, #3b82f6)'
+            }
+        };
+
+        let currentGameMode = 'ffa';
+
+        const GUN_GAME_TIERS = [
+            {
+                name: 'DEAGLE',
+                type: 'pistol',
+                auto: false,
+                ammo: 8,
+                fireRate: 260,
+                damage: 50,
+                headMult: 1.5,
+                reloadTime: 1000,
+                spread: 0.006,
+                adsSpread: 0.001,
+                recoil: 0.006,
+                pellets: 1,
+                scope: false,
+                adsFovMult: 0.8
+            },
+            {
+                name: 'SMG',
+                type: 'smg',
+                auto: true,
+                ammo: 34,
+                fireRate: 70,
+                damage: 18,
+                headMult: 1.5,
+                reloadTime: 1000,
+                spread: 0.008,
+                adsSpread: 0.0015,
+                recoil: 0.003,
+                pellets: 1,
+                scope: false,
+                adsFovMult: 0.78
+            },
+            {
+                name: 'SHOTGUN',
+                type: 'shotgun',
+                auto: false,
+                ammo: 2,
+                fireRate: 420,
+                damage: 18,
+                headMult: 1.4,
+                reloadTime: 1100,
+                spread: 0.055,
+                adsSpread: 0.035,
+                recoil: 0.012,
+                pellets: 8,
+                scope: false,
+                adsFovMult: 0.82,
+                recoilJump: true
+            },
+            {
+                name: 'REVOLVER',
+                type: 'revolver',
+                auto: false,
+                ammo: 6,
+                fireRate: 370,
+                damage: 66,
+                headMult: 1.55,
+                reloadTime: 1200,
+                spread: 0.006,
+                adsSpread: 0.0005,
+                recoil: 0.009,
+                pellets: 1,
+                scope: false,
+                adsFovMult: 0.75
+            },
+            {
+                name: 'AK-47',
+                type: 'ak',
+                auto: true,
+                ammo: 30,
+                fireRate: 105,
+                damage: 25,
+                headMult: 1.5,
+                reloadTime: 1250,
+                spread: 0.006,
+                adsSpread: 0.0008,
+                recoil: 0.0045,
+                pellets: 1,
+                scope: false,
+                adsFovMult: 0.72
+            },
+            {
+                name: 'SNIPER RIFLE',
+                type: 'sniper',
+                auto: false,
+                ammo: 4,
+                fireRate: 900,
+                damage: 160,
+                headMult: 1.5,
+                reloadTime: 1600,
+                spread: 0.032,
+                adsSpread: 0.0,
+                recoil: 0.012,
+                pellets: 1,
+                scope: true,
+                adsFovMult: 0.32
+            },
+            KNIFE_WEAPON
+        ];
+
         const CLASSES = {
             triggerman: {
                 id: 'triggerman',
@@ -1305,6 +1511,20 @@
                 const b2 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, 0.72), matGreyMetal);
                 b2.position.set(0.035, 0.03, -0.32);
                 group.add(stock, b1, b2);
+            } else if (type === 'knife') {
+                const matBlade = new THREE.MeshLambertMaterial({ color: 0xe2e8f0 });
+                const matEdge = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+                const handle = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.09, 0.24), matDarkMetal);
+                handle.position.set(0, -0.04, 0.08);
+                const guard = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.04, 0.05), matGold);
+                guard.position.set(0, 0.01, -0.05);
+                const blade = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.08, 0.38), matBlade);
+                blade.position.set(0, 0.03, -0.25);
+                const edge = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.018, 0.38), matEdge);
+                edge.position.set(0, 0.07, -0.25);
+                group.add(handle, guard, blade, edge);
+                group.rotation.y = 0.15;
+                group.rotation.x = 0.1;
             } else {
                 const slide = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.11, 0.42), type === 'revolver' ? matGreyMetal : matDarkMetal);
                 slide.position.set(0, 0.04, -0.12);
@@ -1358,7 +1578,11 @@
             bhopChain: 0,
             isADS: false,
             slot: 0,
-            ammo: [30, 12],
+            ammo: [30, 12, 1],
+            gunGameTier: 0,
+            hasKnife: true,
+            knifeCooldownEnd: 0,
+            slashAnimTimer: 0,
             isReloading: false,
             reloadEnd: 0,
             lastShot: 0,
@@ -1367,33 +1591,59 @@
             sensitivity: 1.0,
 
             getClassDef() {
+                if (currentGameMode === 'sniperonly') return CLASSES.hunter;
                 return CLASSES[this.classId];
             },
             getWeaponDef() {
+                if (currentGameMode === 'knifeonly') {
+                    return KNIFE_WEAPON;
+                }
+                if (currentGameMode === 'gungame') {
+                    if (this.slot === 2) return KNIFE_WEAPON;
+                    return GUN_GAME_TIERS[Math.min(this.gunGameTier, GUN_GAME_TIERS.length - 1)];
+                }
+                if (this.slot === 2) return KNIFE_WEAPON;
+                if (currentGameMode === 'sniperonly') {
+                    return CLASSES.hunter.primary;
+                }
                 const c = this.getClassDef();
                 return (this.slot === 1 && c.secondary) ? c.secondary : c.primary;
             },
             selectClass(id) {
                 if (!CLASSES[id]) return;
                 this.classId = id;
-                const c = CLASSES[id];
+                const c = this.getClassDef();
                 this.maxHp = c.hp;
                 this.hp = c.hp;
-                this.slot = 0;
-                this.ammo[0] = c.primary.ammo;
+                this.slot = currentGameMode === 'knifeonly' ? 2 : 0;
+                const wep = this.getWeaponDef();
+                this.ammo[0] = wep.ammo;
                 this.ammo[1] = c.secondary ? c.secondary.ammo : 0;
+                this.ammo[2] = 1;
                 this.isReloading = false;
-                buildWeaponModel(c.primary.type);
+                buildWeaponModel(wep.type);
+                if (currentWeaponMesh && wep.type === 'knife') {
+                    currentWeaponMesh.visible = this.hasKnife;
+                }
                 updateHUD();
             },
             switchWeapon(newSlot) {
+                if (currentGameMode === 'knifeonly') newSlot = 2;
+                if (currentGameMode === 'sniperonly' && newSlot === 1) newSlot = 2;
+                if (currentGameMode === 'gungame' && newSlot === 1) newSlot = 2;
                 const c = this.getClassDef();
-                if (newSlot === 1 && !c.secondary) return;
+                if (newSlot === 1 && !c.secondary) newSlot = 2;
                 if (this.slot === newSlot) return;
                 this.slot = newSlot;
                 this.isReloading = false;
+                this.isADS = false;
+                updateScopeUI();
                 document.getElementById('reload-bar-wrap').classList.add('hidden');
-                buildWeaponModel(this.getWeaponDef().type);
+                const wep = this.getWeaponDef();
+                buildWeaponModel(wep.type);
+                if (currentWeaponMesh && wep.type === 'knife') {
+                    currentWeaponMesh.visible = this.hasKnife;
+                }
                 updateHUD();
             },
             respawn() {
@@ -1409,16 +1659,44 @@
                 this.pitch = 0;
                 this.recoilPitchOffset = 0;
                 const c = this.getClassDef();
-                this.maxHp = c.hp;
-                this.hp = c.hp;
-                this.ammo[0] = c.primary.ammo;
+                this.maxHp = currentGameMode === 'knifeonly' ? 100 : c.hp;
+                this.hp = this.maxHp;
+                this.slot = currentGameMode === 'knifeonly' ? 2 : 0;
+                this.hasKnife = true;
+                this.knifeCooldownEnd = 0;
+                this.ammo[2] = 1;
+                const wep = this.getWeaponDef();
+                this.ammo[0] = wep.ammo;
                 this.ammo[1] = c.secondary ? c.secondary.ammo : 0;
                 this.isReloading = false;
+                this.isADS = false;
                 this.bhopChain = 0;
-                buildWeaponModel(this.getWeaponDef().type);
+                updateScopeUI();
+                buildWeaponModel(wep.type);
                 updateHUD();
             }
         };
+
+        function selectGameMode(modeId, broadcast = true) {
+            if (!GAME_MODES[modeId]) return;
+            currentGameMode = modeId;
+            const cfg = GAME_MODES[modeId];
+
+            document.getElementById('hud-mode-badge').textContent = cfg.shortName;
+            document.getElementById('menu-active-mode-label').textContent = cfg.shortName;
+            initGameModeSelectorUI();
+
+            Player.gunGameTier = 0;
+            if (modeId === 'sniperonly') {
+                Player.classId = 'hunter';
+                initMenuUI();
+            }
+            Player.respawn();
+
+            if (broadcast && window.GameNet && window.GameNet.isHost) {
+                window.GameNet.broadcastModeChange(modeId);
+            }
+        }
 
         // Health-on-Kill Mechanic (+50 HP for Players / Local, +30 HP for Bots in a Server)
         function applyHealOnKill(victimIsBot, victimName = '') {
@@ -1451,11 +1729,30 @@
             if (e.code === 'KeyR') startReload();
             if (e.code === 'Digit1') Player.switchWeapon(0);
             if (e.code === 'Digit2') Player.switchWeapon(1);
+            if (e.code === 'Digit3') Player.switchWeapon(2);
             if (e.code === 'KeyQ' || e.code === 'KeyE') {
-                Player.switchWeapon(Player.slot === 0 ? 1 : 0);
+                if (currentGameMode === 'knifeonly') {
+                    Player.switchWeapon(2);
+                } else if (currentGameMode === 'sniperonly' || currentGameMode === 'gungame') {
+                    Player.switchWeapon(Player.slot === 0 ? 2 : 0);
+                } else {
+                    const nextSlot = (Player.slot + 1) % 3;
+                    Player.switchWeapon(nextSlot);
+                }
             }
             if (e.code === 'KeyV' && Player.streak >= 25) {
                 triggerTacticalNuke();
+            }
+        });
+
+        window.addEventListener('wheel', (e) => {
+            if (!isPlaying) return;
+            if (currentGameMode === 'knifeonly') return;
+            if (currentGameMode === 'sniperonly' || currentGameMode === 'gungame') {
+                Player.switchWeapon(Player.slot === 0 ? 2 : 0);
+            } else {
+                const dir = e.deltaY > 0 ? 1 : 2;
+                Player.switchWeapon((Player.slot + dir) % 3);
             }
         });
 
@@ -1469,8 +1766,12 @@
                 isMouseDown = true;
                 tryShoot();
             } else if (e.button === 2) {
-                Player.isADS = true;
-                updateScopeUI();
+                if (Player.getWeaponDef().type === 'knife') {
+                    throwCombatKnife();
+                } else {
+                    Player.isADS = true;
+                    updateScopeUI();
+                }
             }
         });
 
@@ -1509,242 +1810,147 @@
         }
 
         // ============================================================================
-        // 7. UPGRADED 3D CHARACTER GRAPHICS, ARTICULATED LIMBS & PRECISION HITBOXES
-        // ============================================================================
-        const Entities = new Map();
-        const HitboxMeshes = [];
-
-        function createNameplateSprite(name, hpPct = 1) {
-            const c = document.createElement('canvas');
-            c.width = 256;
-            c.height = 64;
-            const ctx = c.getContext('2d');
-
-            const tex = new THREE.CanvasTexture(c);
-            const mat = new THREE.SpriteMaterial({ map: tex, depthTest: false });
-            const sprite = new THREE.Sprite(mat);
-            sprite.scale.set(4.5, 1.15, 1);
-            sprite.renderOrder = 999;
-
-            sprite.userData.updatePlate = (playerName, pct) => {
-                ctx.clearRect(0, 0, 256, 64);
-                ctx.fillStyle = 'rgba(0,0,0,0.72)';
-                ctx.fillRect(24, 4, 208, 30);
-                ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(24, 4, 208, 30);
-                ctx.font = 'bold 18px Chakra Petch, sans-serif';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'center';
-                ctx.fillText(playerName.toUpperCase(), 128, 25);
-
-                ctx.fillStyle = 'rgba(0,0,0,0.9)';
-                ctx.fillRect(36, 40, 184, 14);
-                ctx.fillStyle = pct > 0.4 ? '#ef4444' : '#f97316';
-                ctx.fillRect(38, 42, Math.max(0, 180 * Math.min(1, pct)), 10);
-                tex.needsUpdate = true;
-            };
-            sprite.userData.updatePlate(name, hpPct);
-            return sprite;
-        }
-
-        function createCharacterEntity(id, name, classId, isBot = false) {
-            const cls = CLASSES[classId] || CLASSES.triggerman;
-            const root = new THREE.Group();
-
-            // Upgraded Voxel Character Materials
-            const matSkin = new THREE.MeshLambertMaterial({ color: 0xfcd34d });
-            const matTorso = new THREE.MeshLambertMaterial({ color: cls.bodyColor });
-            const matVest = new THREE.MeshLambertMaterial({ color: 0x1e293b });
-            const matPants = new THREE.MeshLambertMaterial({ color: 0x0f172a });
-            const matBoots = new THREE.MeshLambertMaterial({ color: 0x090d16 });
-            const matGun = new THREE.MeshLambertMaterial({ color: 0x18181b });
-            const matVisor = new THREE.MeshBasicMaterial({ color: 0x111111 });
-            const matAccent = new THREE.MeshLambertMaterial({ color: cls.color });
-
-            // 1) Articulated Left & Right Legs with Hip Pivots, Kneepads & Boots
-            const leftLegPivot = new THREE.Group();
-            leftLegPivot.position.set(-0.44, 1.75, 0);
-            const leftLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.68, 1.45, 0.68), matPants);
-            leftLegMesh.position.set(0, -0.72, 0);
-            const leftBoot = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.42, 0.82), matBoots);
-            leftBoot.position.set(0, -1.52, -0.06);
-            leftLegPivot.add(leftLegMesh, leftBoot);
-
-            const rightLegPivot = new THREE.Group();
-            rightLegPivot.position.set(0.44, 1.75, 0);
-            const rightLegMesh = new THREE.Mesh(new THREE.BoxGeometry(0.68, 1.45, 0.68), matPants);
-            rightLegMesh.position.set(0, -0.72, 0);
-            const rightBoot = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.42, 0.82), matBoots);
-            rightBoot.position.set(0, -1.52, -0.06);
-            rightLegPivot.add(rightLegMesh, rightBoot);
-
-            // 2) Detailed Torso with Tactical Vest, Chest Pouches & Belt
-            const torso = new THREE.Mesh(new THREE.BoxGeometry(1.62, 1.85, 0.92), matTorso);
-            torso.position.set(0, 2.65, 0);
-            torso.castShadow = true;
-
-            const vest = new THREE.Mesh(new THREE.BoxGeometry(1.68, 1.25, 1.02), matVest);
-            vest.position.set(0, 2.72, 0);
-
-            const pouch1 = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.45, 0.16), matBoots);
-            pouch1.position.set(-0.38, 2.58, -0.55);
-            const pouch2 = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.45, 0.16), matBoots);
-            pouch2.position.set(0.38, 2.58, -0.55);
-
-            const belt = new THREE.Mesh(new THREE.BoxGeometry(1.66, 0.25, 0.98), matBoots);
-            belt.position.set(0, 1.82, 0);
-
-            // 3) Detailed Head with Sunglasses/Visor & Class-Specific 3D Hat
-            const headGroup = new THREE.Group();
-            headGroup.position.set(0, 4.22, 0);
-
-            const headCube = new THREE.Mesh(new THREE.BoxGeometry(1.24, 1.24, 1.24), matSkin);
-            headCube.castShadow = true;
-
-            // Cool Tactical Sunglasses on Front (-Z)
-            const shadesFront = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.32, 0.12), matVisor);
-            shadesFront.position.set(0, 0.12, -0.62);
-            const shadesLensL = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.22, 0.14), matAccent);
-            shadesLensL.position.set(-0.28, 0.12, -0.63);
-            const shadesLensR = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.22, 0.14), matAccent);
-            shadesLensR.position.set(0.28, 0.12, -0.63);
-            headGroup.add(headCube, shadesFront, shadesLensL, shadesLensR);
-
-            // Class-Specific 3D Headgear
-            if (cls.hatStyle === 'fedora') {
-                const brim = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.12, 1.75), matBoots);
-                brim.position.set(0, 0.62, 0);
-                const crown = new THREE.Mesh(new THREE.BoxGeometry(1.18, 0.45, 1.18), matVest);
-                crown.position.set(0, 0.86, 0);
-                const band = new THREE.Mesh(new THREE.BoxGeometry(1.22, 0.12, 1.22), matAccent);
-                band.position.set(0, 0.72, 0);
-                headGroup.add(brim, crown, band);
-            } else if (cls.hatStyle === 'backcap') {
-                const capTop = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.36, 1.3), matAccent);
-                capTop.position.set(0, 0.56, 0);
-                const bill = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.1, 0.45), matVest);
-                bill.position.set(0, 0.44, 0.78); // Backwards bill
-                headGroup.add(capTop, bill);
-            } else if (cls.hatStyle === 'snipercap') {
-                const capTop = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.38, 1.3), matVest);
-                capTop.position.set(0, 0.56, 0);
-                const bill = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.1, 0.48), matBoots);
-                bill.position.set(0, 0.44, -0.78);
-                headGroup.add(capTop, bill);
-            } else if (cls.hatStyle === 'beanie') {
-                const beanie = new THREE.Mesh(new THREE.BoxGeometry(1.32, 0.46, 1.32), matAccent);
-                beanie.position.set(0, 0.6, 0);
-                const pom = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.25, 0.38), matSkin);
-                pom.position.set(0, 0.9, 0);
-                headGroup.add(beanie, pom);
-            } else {
-                // Triggerman Tactical Headband
-                const band = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.26, 1.3), matAccent);
-                band.position.set(0, 0.42, 0);
-                const hair = new THREE.Mesh(new THREE.BoxGeometry(1.26, 0.22, 1.26), matBoots);
-                hair.position.set(0, 0.65, 0);
-                headGroup.add(band, hair);
-            }
-
-            // 4) Articulated Arms & Detailed 3D Held Weapon
-            const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.45, 0.52), matTorso);
-            leftArm.position.set(-1.08, 2.85, -0.25);
-            leftArm.rotation.x = Math.PI / 3.2;
-
-            const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.52, 1.45, 0.52), matTorso);
-            rightArm.position.set(1.08, 2.9, -0.38);
-            rightArm.rotation.x = Math.PI / 2.2;
-
-            const gunGroup = new THREE.Group();
-            const gunBody = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.28, 1.45), matGun);
-            const gunBarrel = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.65), new THREE.MeshLambertMaterial({ color: 0x52525b }));
-            gunBarrel.position.set(0, 0.05, -0.95);
-            const gunMag = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.42, 0.2), matAccent);
-            gunMag.position.set(0, -0.26, -0.15);
-            gunGroup.add(gunBody, gunBarrel, gunMag);
-            gunGroup.position.set(1.08, 2.98, -1.05);
-
-            // 5) PRECISION RAYCAST HITBOXES (Generous Invisible Bounding Boxes for Reliable Headshot & Body Hits)
-            const hitboxMat = new THREE.MeshBasicMaterial({
-                transparent: true,
-                opacity: 0.0,
-                depthWrite: false
-            });
-
-            // Head Hitbox (Covers entire head & headgear generously)
-            const headHitbox = new THREE.Mesh(new THREE.BoxGeometry(1.52, 1.52, 1.52), hitboxMat);
-            headHitbox.position.set(0, 4.3, 0);
-            headHitbox.userData = { entityId: id, isHead: true };
-
-            // Body Hitbox (Covers torso, arms, and legs so no shot ever slips between limbs)
-            const bodyHitbox = new THREE.Mesh(new THREE.BoxGeometry(2.15, 3.55, 1.55), hitboxMat);
-            bodyHitbox.position.set(0, 1.78, 0);
-            bodyHitbox.userData = { entityId: id, isHead: false };
-
-            const nameplate = createNameplateSprite(name, 1.0);
-            nameplate.position.set(0, 5.85, 0);
-
-            root.add(
-                leftLegPivot, rightLegPivot,
-                torso, vest, pouch1, pouch2, belt,
-                headGroup, leftArm, rightArm, gunGroup,
-                headHitbox, bodyHitbox, nameplate
-            );
-            scene.add(root);
-
-            HitboxMeshes.push(headHitbox, bodyHitbox);
-
-            const spawns = MAPS[currentMapId].spawns;
-            const sp = spawns[Math.floor(Math.random() * spawns.length)];
-            const ent = {
-                id,
-                name,
-                classId,
-                isBot,
-                hp: cls.hp,
-                maxHp: cls.hp,
-                kills: 0,
-                score: 0,
-                x: sp.x,
-                y: sp.y,
-                z: sp.z,
-                vx: 0,
-                vy: 0,
-                vz: 0,
-                yaw: sp.yaw || 0,
-                root,
-                headHitbox,
-                bodyHitbox,
-                leftLegPivot,
-                rightLegPivot,
-                nameplate,
-                walkCycle: 0,
-                targetX: 0,
-                targetZ: 0,
-                nextThink: 0,
-                lastShot: 0
-            };
-
-            Entities.set(id, ent);
-            return ent;
-        }
-
-        function removeEntity(id) {
-            const ent = Entities.get(id);
-            if (!ent) return;
-            scene.remove(ent.root);
-            const hIdx = HitboxMeshes.indexOf(ent.headHitbox);
-            if (hIdx !== -1) HitboxMeshes.splice(hIdx, 1);
-            const bIdx = HitboxMeshes.indexOf(ent.bodyHitbox);
-            if (bIdx !== -1) HitboxMeshes.splice(bIdx, 1);
-            Entities.delete(id);
-        }
-
-        // ============================================================================
-        // 8. BULLET TRACERS, PARTICLES & FLOATING 3D DAMAGE NUMBERS
+        // 8. BULLET TRACERS, THROWN KNIVES, PARTICLES & FLOATING 3D DAMAGE NUMBERS
         // ============================================================================
         const activeEffects = [];
+        const thrownKnives = [];
+
+        function createWorldKnifeMesh() {
+            const g = new THREE.Group();
+            const handle = new THREE.Mesh(
+                new THREE.BoxGeometry(0.12, 0.16, 0.45),
+                new THREE.MeshLambertMaterial({ color: 0x18181b })
+            );
+            const guard = new THREE.Mesh(
+                new THREE.BoxGeometry(0.32, 0.08, 0.09),
+                new THREE.MeshLambertMaterial({ color: 0xf59e0b })
+            );
+            guard.position.set(0, 0, -0.24);
+            const blade = new THREE.Mesh(
+                new THREE.BoxGeometry(0.06, 0.16, 0.75),
+                new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
+            );
+            blade.position.set(0, 0.02, -0.64);
+            g.add(handle, guard, blade);
+            return g;
+        }
+
+        function spawnThrownKnifeProjectile(origin, dir, isLocalOwner) {
+            const mesh = createWorldKnifeMesh();
+            mesh.position.copy(origin);
+            scene.add(mesh);
+
+            const speed = 64;
+            thrownKnives.push({
+                mesh,
+                pos: origin.clone(),
+                vel: dir.clone().multiplyScalar(speed),
+                isLocalOwner,
+                stuck: false,
+                born: performance.now(),
+                duration: 8000
+            });
+        }
+
+        function throwCombatKnife() {
+            if (!isPlaying || !Player.hasKnife) return;
+            Player.hasKnife = false;
+            Player.ammo[2] = 0;
+            Player.knifeCooldownEnd = performance.now() + 5000;
+            if (currentWeaponMesh && Player.getWeaponDef().type === 'knife') {
+                currentWeaponMesh.visible = false;
+            }
+            SoundFX.playKnifeThrow();
+            updateHUD();
+
+            raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+            const origin = raycaster.ray.origin.clone().add(raycaster.ray.direction.clone().multiplyScalar(0.8));
+            const dir = raycaster.ray.direction.clone().normalize();
+
+            spawnThrownKnifeProjectile(origin, dir, true);
+            GameNet.broadcastKnifeThrow(origin, dir);
+        }
+
+        function updateThrownKnives(dt, now) {
+            // Auto-recharge thrown knife after 5s cooldown
+            if (!Player.hasKnife && now >= Player.knifeCooldownEnd) {
+                Player.hasKnife = true;
+                Player.ammo[2] = 1;
+                if (currentWeaponMesh && Player.getWeaponDef().type === 'knife') {
+                    currentWeaponMesh.visible = true;
+                }
+                showScorePopup('🔪 COLTELLO PRONTO!');
+                updateHUD();
+            }
+
+            for (let i = thrownKnives.length - 1; i >= 0; i--) {
+                const tk = thrownKnives[i];
+                if (now - tk.born > tk.duration) {
+                    scene.remove(tk.mesh);
+                    thrownKnives.splice(i, 1);
+                    continue;
+                }
+
+                if (tk.stuck) {
+                    // Allow local owner to pick up stuck knife by walking near it
+                    if (tk.isLocalOwner && !Player.hasKnife) {
+                        const distToPlayer = Math.hypot(Player.x - tk.pos.x, (Player.y + 2) - tk.pos.y, Player.z - tk.pos.z);
+                        if (distToPlayer < 3.6) {
+                            Player.hasKnife = true;
+                            Player.ammo[2] = 1;
+                            if (currentWeaponMesh && Player.getWeaponDef().type === 'knife') {
+                                currentWeaponMesh.visible = true;
+                            }
+                            SoundFX.playReload();
+                            showScorePopup('🔪 COLTELLO RECUPERATO!');
+                            updateHUD();
+                            scene.remove(tk.mesh);
+                            thrownKnives.splice(i, 1);
+                        }
+                    }
+                    continue;
+                }
+
+                // Flight step & gravity arc
+                tk.vel.y -= 14.5 * dt;
+                const stepVec = tk.vel.clone().multiplyScalar(dt);
+                const stepLen = stepVec.length();
+                const stepDir = stepVec.clone().normalize();
+
+                raycaster.set(tk.pos, stepDir);
+
+                // Check Enemy Hitboxes first if local owner
+                if (tk.isLocalOwner) {
+                    const entHits = raycaster.intersectObjects(HitboxMeshes, false).filter(h => h.distance <= stepLen + 0.7);
+                    if (entHits.length > 0) {
+                        const hit = entHits[0];
+                        const entId = hit.object.userData.entityId;
+                        const target = Entities.get(entId);
+                        if (target) {
+                            showScorePopup('🎯 BULLSEYE! COLTELLO DA LANCIO!');
+                            applyDamageToEntity(target, KNIFE_WEAPON.throwDamage, true, hit.point, 'THROWING KNIFE 🔪');
+                            scene.remove(tk.mesh);
+                            thrownKnives.splice(i, 1);
+                            continue;
+                        }
+                    }
+                }
+
+                // Check Map Walls/Floors
+                const wallHits = raycaster.intersectObjects(mapMeshes, false).filter(h => h.distance <= stepLen + 0.4);
+                if (wallHits.length > 0) {
+                    tk.pos.copy(wallHits[0].point);
+                    tk.mesh.position.copy(tk.pos);
+                    tk.stuck = true;
+                    spawnImpactParticles(tk.pos, 0x38bdf8, 5);
+                    continue;
+                }
+
+                tk.pos.add(stepVec);
+                tk.mesh.position.copy(tk.pos);
+                tk.mesh.rotation.x -= 22 * dt;
+            }
+        }
 
         function spawnTracer(startVec, endVec, colorHex = 0xfef08a) {
             const mat = new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.9 });
@@ -1815,6 +2021,7 @@
 
         function startReload() {
             const wep = Player.getWeaponDef();
+            if (wep.type === 'knife') return;
             if (Player.isReloading || Player.ammo[Player.slot] >= wep.ammo) return;
             Player.isReloading = true;
             Player.reloadEnd = performance.now() + wep.reloadTime;
@@ -1829,6 +2036,35 @@
             const now = performance.now();
             const wep = Player.getWeaponDef();
             if (now - Player.lastShot < wep.fireRate) return;
+
+            // Melee Combat Knife Slash (Left Click)
+            if (wep.type === 'knife') {
+                Player.lastShot = now;
+                Player.slashAnimTimer = 0.22;
+                SoundFX.playKnifeSlash();
+
+                raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
+                const maxMeleeRange = 5.2;
+                const wallHits = raycaster.intersectObjects(mapMeshes, false);
+                const wallDist = wallHits.length > 0 ? wallHits[0].distance : maxMeleeRange;
+
+                const entityHits = raycaster.intersectObjects(HitboxMeshes, false).filter(
+                    h => h.distance <= Math.min(maxMeleeRange, wallDist)
+                );
+
+                if (entityHits.length > 0) {
+                    const hit = entityHits.find(h => h.object.userData.isHead) || entityHits[0];
+                    const target = Entities.get(hit.object.userData.entityId);
+                    if (target) {
+                        const isHead = hit.object.userData.isHead;
+                        const dmg = Math.round(wep.damage * (isHead ? wep.headMult : 1.0));
+                        applyDamageToEntity(target, dmg, isHead, hit.point, 'COMBAT KNIFE 🔪');
+                    }
+                } else if (wallHits.length > 0 && wallHits[0].distance <= 3.8) {
+                    spawnImpactParticles(wallHits[0].point, 0x38bdf8, 4);
+                }
+                return;
+            }
 
             if (Player.ammo[Player.slot] <= 0) {
                 startReload();
@@ -1927,6 +2163,27 @@
                 const tags = [`ELIMINATO ${target.name} • +${healedHp} HP ❤️`];
                 if (isHead) { pts += 50; tags.push('+50 HEADSHOT 🎯'); }
                 if (!Player.onGround) { pts += 25; tags.push('+25 MID-AIR 🦅'); }
+
+                // Gun Game weapon progression on every kill
+                if (currentGameMode === 'gungame') {
+                    if (Player.gunGameTier >= GUN_GAME_TIERS.length - 1) {
+                        pts += 500;
+                        tags.push('🏆 VITTORIA GUN GAME! +500 PTS');
+                        Player.gunGameTier = 0;
+                    } else {
+                        Player.gunGameTier++;
+                        const nextWep = GUN_GAME_TIERS[Player.gunGameTier];
+                        tags.push(`⬆️ TIER ${Player.gunGameTier + 1}/7: ${nextWep.name}`);
+                    }
+                    Player.slot = Player.gunGameTier === GUN_GAME_TIERS.length - 1 ? 2 : 0;
+                    Player.isReloading = false;
+                    Player.isADS = false;
+                    document.getElementById('reload-bar-wrap').classList.add('hidden');
+                    updateScopeUI();
+                    const activeWep = Player.getWeaponDef();
+                    Player.ammo[0] = activeWep.ammo;
+                    buildWeaponModel(activeWep.type);
+                }
 
                 Player.score += pts;
                 showScorePopup(tags.join('  '));
@@ -2287,6 +2544,7 @@
                     this.connections.push(conn);
                     if (this.isHost) {
                         conn.send({ type: 'mapChange', mapId: currentMapId });
+                        conn.send({ type: 'modeChange', modeId: currentGameMode });
                     } else {
                         this.roomCode = codeLabel;
                         document.getElementById('room-feedback').textContent = `Connesso alla stanza #${codeLabel}! Clicca Gioca!`;
@@ -2335,11 +2593,29 @@
                         const victimLabel = msg.victimName || 'GIOCATORE';
                         const healed = applyHealOnKill(false, victimLabel); // +50 HP for killing a real player
                         showScorePopup(`ELIMINATO ${victimLabel} • +${healed} HP ❤️`);
+                        if (currentGameMode === 'gungame') {
+                            Player.gunGameTier = (Player.gunGameTier + 1) % GUN_GAME_TIERS.length;
+                            const activeWep = Player.getWeaponDef();
+                            Player.ammo[0] = activeWep.ammo;
+                            buildWeaponModel(activeWep.type);
+                            updateHUD();
+                        }
                     }
                 } else if (msg.type === 'mapChange') {
                     if (msg.mapId && msg.mapId !== currentMapId) {
                         selectAndLoadMap(msg.mapId, false);
                     }
+                } else if (msg.type === 'modeChange') {
+                    if (msg.modeId && msg.modeId !== currentGameMode) {
+                        selectGameMode(msg.modeId, false);
+                    }
+                } else if (msg.type === 'knifeThrow') {
+                    spawnThrownKnifeProjectile(
+                        new THREE.Vector3(msg.ox, msg.oy, msg.oz),
+                        new THREE.Vector3(msg.dx, msg.dy, msg.dz),
+                        false
+                    );
+                    SoundFX.playKnifeThrow();
                 }
             },
 
@@ -2429,6 +2705,20 @@
                 this.connections.forEach(c => { if (c.open) c.send(pkt); });
             },
 
+            broadcastModeChange(modeId) {
+                const pkt = { type: 'modeChange', modeId };
+                this.connections.forEach(c => { if (c.open) c.send(pkt); });
+            },
+
+            broadcastKnifeThrow(origin, dir) {
+                const pkt = {
+                    type: 'knifeThrow',
+                    ox: origin.x, oy: origin.y, oz: origin.z,
+                    dx: dir.x, dy: dir.y, dz: dir.z
+                };
+                this.connections.forEach(c => { if (c.open) c.send(pkt); });
+            },
+
             updateOnlineBadge() {
                 const humanCount = 1 + Array.from(Entities.values()).filter(e => !e.isBot).length;
                 document.getElementById('online-count-badge').textContent =
@@ -2463,6 +2753,32 @@
                     selectAndLoadMap(m.id, true);
                 });
                 mapListEl.appendChild(btn);
+            });
+        }
+
+        function initGameModeSelectorUI() {
+            const modeListEl = document.getElementById('mode-list');
+            if (!modeListEl) return;
+            modeListEl.innerHTML = '';
+
+            Object.values(GAME_MODES).forEach((gm) => {
+                const active = gm.id === currentGameMode;
+                const btn = document.createElement('div');
+                btn.className = `p-2 rounded-lg border-2 cursor-pointer transition text-left ${
+                    active ? 'bg-purple-500/25 border-amber-400 shadow-md' : 'bg-black/60 border-white/15 hover:border-white/35'
+                }`;
+                btn.innerHTML = `
+                    <div class="h-1.5 w-full rounded mb-1.5" style="background:${gm.swatch}"></div>
+                    <div class="text-xs font-black text-white flex items-center justify-between">
+                        <span>${gm.name.toUpperCase()}</span>
+                        ${active ? '<i class="fa-solid fa-circle-check text-amber-400 text-[10px]"></i>' : ''}
+                    </div>
+                    <div class="text-[10px] text-gray-300 truncate">${gm.subtitle}</div>
+                `;
+                btn.addEventListener('click', () => {
+                    selectGameMode(gm.id, true);
+                });
+                modeListEl.appendChild(btn);
             });
         }
 
@@ -2522,9 +2838,27 @@
                 ? 'h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-sm transition-all duration-150'
                 : 'h-full bg-gradient-to-r from-emerald-500 to-lime-400 rounded-sm transition-all duration-150';
 
-            document.getElementById('hud-weapon-name').textContent = wep.name;
-            document.getElementById('hud-ammo-cur').textContent = Player.ammo[Player.slot];
-            document.getElementById('hud-ammo-max').textContent = wep.ammo;
+            if (wep.type === 'knife') {
+                document.getElementById('hud-weapon-name').textContent = Player.hasKnife
+                    ? 'COLTELLO 🔪 [CLICK DX: LANCIA]'
+                    : 'COLTELLO LANCIATO (RICARICA 5s)';
+                document.getElementById('hud-ammo-cur').textContent = Player.hasKnife ? '1' : '0';
+                document.getElementById('hud-ammo-max').textContent = '1';
+            } else {
+                document.getElementById('hud-weapon-name').textContent = wep.name;
+                document.getElementById('hud-ammo-cur').textContent = Player.ammo[Player.slot];
+                document.getElementById('hud-ammo-max').textContent = wep.ammo;
+            }
+
+            const ggBadge = document.getElementById('gungame-badge');
+            if (currentGameMode === 'gungame') {
+                ggBadge.classList.remove('hidden');
+                const tierWep = GUN_GAME_TIERS[Math.min(Player.gunGameTier, GUN_GAME_TIERS.length - 1)];
+                document.getElementById('gungame-tier-text').textContent =
+                    `TIER ${Player.gunGameTier + 1}/${GUN_GAME_TIERS.length} (${tierWep.name})`;
+            } else {
+                ggBadge.classList.add('hidden');
+            }
 
             document.getElementById('hud-streak').textContent = Player.streak;
             const nukeBanner = document.getElementById('nuke-banner');
@@ -2642,7 +2976,11 @@
                 wishZ /= wishLen;
             }
 
-            const clsSpeed = Player.getClassDef().speedMult;
+            const activeWep = Player.getWeaponDef();
+            const knifeSpeedMult = activeWep.type === 'knife'
+                ? (currentGameMode === 'knifeonly' ? 1.25 : 1.18)
+                : 1.0;
+            const clsSpeed = Player.getClassDef().speedMult * knifeSpeedMult;
             const baseSpeed = 17.5 * clsSpeed * (Player.isADS ? 0.65 : 1.0);
 
             if (Player.onGround) {
@@ -2739,14 +3077,20 @@
             const bobX = Math.cos(Player.bobPhase) * (Player.isADS ? 0.002 : 0.015);
             const bobY = Math.abs(Math.sin(Player.bobPhase)) * (Player.isADS ? 0.002 : 0.018);
 
-            const targetRigX = Player.isADS ? 0.0 : 0.32 + bobX;
-            const targetRigY = (Player.isADS ? -0.17 : -0.28) - bobY;
-            const targetRigZ = (Player.isADS ? -0.38 : -0.52) + Player.recoilKick * 1.6;
+            if (Player.slashAnimTimer > 0) {
+                Player.slashAnimTimer = Math.max(0, Player.slashAnimTimer - dt);
+            }
+            const slashSwing = Player.slashAnimTimer > 0 ? Math.sin((Player.slashAnimTimer / 0.22) * Math.PI) : 0;
+
+            const targetRigX = (Player.isADS ? 0.0 : 0.32 + bobX) - slashSwing * 0.28;
+            const targetRigY = (Player.isADS ? -0.17 : -0.28) - bobY + slashSwing * 0.08;
+            const targetRigZ = (Player.isADS ? -0.38 : -0.52) + Player.recoilKick * 1.6 - slashSwing * 0.35;
 
             weaponRig.position.x += (targetRigX - weaponRig.position.x) * Math.min(1, dt * 18);
             weaponRig.position.y += (targetRigY - weaponRig.position.y) * Math.min(1, dt * 18);
             weaponRig.position.z += (targetRigZ - weaponRig.position.z) * Math.min(1, dt * 18);
-            weaponRig.rotation.x = Player.isReloading ? 0.45 : Player.recoilKick * 1.8;
+            weaponRig.rotation.x = Player.isReloading ? 0.45 : (Player.recoilKick * 1.8 - slashSwing * 0.95);
+            weaponRig.rotation.y = slashSwing * 0.65;
 
             document.getElementById('hud-speed').textContent = Math.round(speed * 10);
             const bhopBadge = document.getElementById('bhop-badge');
@@ -2813,6 +3157,7 @@
             }
 
             updateBots(dt, now);
+            updateThrownKnives(dt, now);
             updateEffects(dt, now);
 
             renderer.render(scene, camera);
@@ -2917,6 +3262,7 @@
             Player.respawn();
             initMenuUI();
             initMapSelectorUI();
+            initGameModeSelectorUI();
             syncBotCount();
             GameNet.updateOnlineBadge();
             requestAnimationFrame(animate);
